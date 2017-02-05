@@ -1,7 +1,11 @@
 .git
 .gitignore
 .gitlab-ci.yml
+
 LICENSE
-Makefile
 README.md
+
 docker-compose.yml
+
+Makefile
+*.variable

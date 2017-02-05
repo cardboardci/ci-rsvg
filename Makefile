@@ -1,8 +1,5 @@
-IMAGE := jrbeverly/rsvg
-VERSION := 1.0.0
-DATE := $(shell date +%Y-%m-%d:%H:%M:%S)
-
-include Makefile.variable
+include Makefile.image.variable
+include Makefile.version.variable
 
 build:
 	docker build \
