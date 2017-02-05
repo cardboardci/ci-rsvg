@@ -1,0 +1,19 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - build
+
+before_script:
+  - docker login -u $CI_BUILD_USER -p $CI_BUILD_TOKEN
+
+build:
+  stage: build
+  only: 
+    - master
+  script:
+    - apk --no-cache add make
+    - make build
+    - make push
