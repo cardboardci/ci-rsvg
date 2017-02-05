@@ -1,4 +1,4 @@
-# Dockerized Alpine
+# Dockerized librsvg
 [![MIT License][license-badge]][license][![Alpine][alpine-badge]][alpine]
 
 A super small Alpine image with rsvg-convert installed.
