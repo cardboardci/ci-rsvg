@@ -21,7 +21,7 @@ VOLUME /media
 #
 # Configuration options of the docker container
 WORKDIR /media
-ENTRYPOINT ["bash"]
+ENTRYPOINT []
 CMD []
 
 # Metdata Arguments

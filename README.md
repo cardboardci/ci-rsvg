@@ -5,7 +5,24 @@ A super small Alpine image with rsvg-convert installed.
 
 ## Usage
 
-It is suggested to use this as either a template or a base image.
+You can use this image locally with `docker run`, calling [`rsvg-convert`](http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html) as such:
+
+```console
+docker run -v /media:/media jrbeverly/rsvg rsvg-convert test.svg -o test.png
+```
+
+### Gitlab
+You can add a build job with `.gitlab-ci.yml`
+
+```yaml
+compile_pdf:
+  image: jrbeverly/rsvg
+  script:
+    - rsvg-convert test.svg -o test.png
+  artifacts:
+    paths:
+      - test.png
+```
 
 ## Image Tags
 
