@@ -1,1 +1,3 @@
 TAG := latest
+DUID := 8500
+DGID := 9000

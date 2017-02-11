@@ -5,6 +5,8 @@ build:
 	docker build \
 		--build-arg BUILD_DATE="${DATE}" \
 		--build-arg VERSION="${VERSION}" \
+		--build-arg DUID="${DUID}" \
+		--build-arg DGID="${DGID}" \
 		--pull -t ${IMAGE}:${TAG} .
 
 clean:
