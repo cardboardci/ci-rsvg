@@ -13,6 +13,7 @@ build:
   stage: build
   only: 
     - master
+    - fixed
   script:
     - apk --no-cache add make
     - make build
