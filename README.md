@@ -39,6 +39,11 @@ Build tags available with the image `jrbeverly/rsvg:{TAG}`.
     <td><a href="/../commits/master"><img alt="Build Status" src="/../badges/master/build.svg"/></a></td>
     <td>An alpine image with librsvg installed.</td>
   </tr>
+  <tr>
+    <td><a href="/../tree/fixed">fixed</a></td>
+    <td><a href="/../commits/fixed"><img alt="Build Status" src="/../badges/fixed/build.svg"/></a></td>
+    <td>An alpine image with librsvg installed, with a non-root running user.</td>
+  </tr>
 </table>
 
 ## Components
@@ -50,6 +55,8 @@ Build arguments used in the system.
 | -------- | ------- |------------ |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
+| DUID | see [Makefile](Makefile.image.variable) | The [user id](http://www.linfo.org/uid.html) of the docker user. |
+| DGID | see [Makefile](Makefile.image.variable) | The [group id](http://www.linfo.org/uid.html) of the docker user's group. |
 
 ### Environment Variables
 
@@ -67,12 +74,13 @@ To build the docker image, use the included makefile.
 make build
 ```
 
-You can also build the image manually, but it is recommended to use the makefile.
+You can also build the image manually, but it is recommended to use the makefile to ensure all build arguments are provided.
 
 ```
 docker build \
 		--build-arg BUILD_DATE="$(date)" \
 		--build-arg VERSION="${VERSION}" \
+    ...
 		--pull -t ${IMAGE}:${TAG} .
 ```
 
