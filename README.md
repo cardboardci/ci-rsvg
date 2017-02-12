@@ -1,6 +1,8 @@
 # Dockerized librsvg
 [![MIT License][license-badge]][license][![Alpine][alpine-badge]][alpine]
 
+## Summary
+
 A super small Alpine image with rsvg-convert installed.
 
 ## Usage
@@ -40,8 +42,8 @@ Build arguments used in the system.
 
 | Variable | Default | Description |
 | -------- | ------- |------------ |
-| BUILD_DATE | - | The date which the image was built. |
-| VERSION | - | The version of the image. |
+| BUILD_DATE | see [Makefile](Makefile.image.variable) | The date which the image was built. |
+| VERSION | see [Makefile](Makefile.image.variable) | The version of the image. |
 | DUID | see [Makefile](Makefile.image.variable) | The [user id](http://www.linfo.org/uid.html) of the docker user. |
 | DGID | see [Makefile](Makefile.image.variable) | The [group id](http://www.linfo.org/uid.html) of the docker user's group. |
 
