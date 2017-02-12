@@ -28,23 +28,10 @@ compile_pdf:
 
 Build tags available with the image `jrbeverly/rsvg:{TAG}`.
 
-<table>
-  <tr>
-    <th width="7%">Tag</th>
-    <th width="10%">Status</th> 
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><a href="/../tree/master">master</a></td>
-    <td><a href="/../commits/master"><img alt="Build Status" src="/../badges/master/build.svg"/></a></td>
-    <td>An alpine image with librsvg installed.</td>
-  </tr>
-  <tr>
-    <td><a href="/../tree/fixed">fixed</a></td>
-    <td><a href="/../commits/fixed"><img alt="Build Status" src="/../badges/fixed/build.svg"/></a></td>
-    <td>An alpine image with librsvg installed, with a non-root running user.</td>
-  </tr>
-</table>
+| Tag | Status | Description |
+| --- | ------ | ----------- |
+| [latest](/../tree/latest) | [![build status](/../badges/latest/build.svg)](/../commits/latest) | An alpine image with librsvg installed. |
+| [locked](/../tree/locked) | [![build status](/../badges/locked/build.svg)](/../commits/locked) | An alpine image with librsvg installed, with a non-root running user. |
 
 ## Components
 ### Build Arguments

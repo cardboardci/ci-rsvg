@@ -9,6 +9,9 @@ build:
 		--build-arg DGID="${DGID}" \
 		--pull -t ${IMAGE}:${TAG} .
 
+save:
+	docker save --output=image.tar ${IMAGE}:${TAG}
+
 clean:
 	docker rmi --force ${IMAGE}:${TAG}
 

@@ -3,18 +3,47 @@ image: docker:latest
 services:
   - docker:dind
 
+before_script:
+  - apk --no-cache add make
+
 stages:
   - build
-
-before_script:
-  - docker login -u $CI_BUILD_USER -p $CI_BUILD_TOKEN
+  - test
+  - release
 
 build:
   stage: build
-  only: 
-    - master
-    - fixed
   script:
-    - apk --no-cache add make
     - make build
+    - make save
+  artifacts:
+    paths:
+      - image.tar
+  only:
+    - latest
+    - locked
+    
+test:
+  stage: test
+  script:
+    - echo "No testing at the moment"
+  artifacts:
+    paths:
+      - image.tar
+  dependencies:
+    - build
+  only:
+    - latest
+    - locked
+
+release:
+  stage: release
+  script:
+    - docker load --input=image.tar
+    - docker login -u $CI_BUILD_USER -p $CI_BUILD_TOKEN
     - make push
+  dependencies:
+    - build
+  only:
+    - latest
+    - locked

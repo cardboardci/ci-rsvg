@@ -9,3 +9,4 @@ docker-compose.yml
 
 Makefile
 *.variable
+*.tar
