@@ -3,3 +3,5 @@ NAMESPACE := jrbeverly
 PROJECT := rsvg
 FULL_NAME := ${REGISTRY}/${NAMESPACE}/${PROJECT}
 NAME := ${NAMESPACE}/${PROJECT}
+
+RELEASE := docker.io/jrbeverly/rsvg

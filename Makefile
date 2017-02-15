@@ -43,4 +43,10 @@ pull:
 push:
 	docker push ${FULL_NAME}
 
+deploy:
+	docker tag ${FULL_NAME}:latest ${RELEASE}:latest
+	docker tag ${FULL_NAME}:baseimage ${RELEASE}:baseimage
+	docker tag ${FULL_NAME}:privileged ${RELEASE}:privileged
+	docker push ${RELEASE}
+
 all: baseimage privileged

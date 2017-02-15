@@ -68,7 +68,6 @@ release:
   script:
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - make pull
-    - cp copy.variable Makefile.image.variable
-    - make push
+    - make deploy
   dependencies:
     - test
