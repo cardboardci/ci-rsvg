@@ -3,10 +3,6 @@ image: docker:latest
 services:
   - docker:dind
 
-variables:
-  VARIABLES: Makefile.image.variable
-  VARIABLES_COPY: Makefile.image.variable.copy
-
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CONTAINER_REGISTRY
   - apk --no-cache add make
@@ -20,10 +16,12 @@ stages:
 configure:
   stage: configure
   script:
-    - cp $VARIABLES $VARIABLES_COPY
-    - sed -i "/REGISTRY.*:=/c\REGISTRY := $CONTAINER_REGISTRY" $VARIABLES
-    - sed -i "/NAMESPACE.*:=/c\NAMESPACE := $CI_PROJECT_NAMESPACE" $VARIABLES
-    - sed -i "/PROJECT.*:=/c\PROJECT := $CI_PROJECT_NAME" $VARIABLES
+    - cp Makefile.image.variable $Makefile.image.variable.copy
+    - sed -i "/REGISTRY.*:=/c\REGISTRY := $CONTAINER_REGISTRY" Makefile.image.variable
+    - sed -i "/NAMESPACE.*:=/c\NAMESPACE := $CI_PROJECT_NAMESPACE" Makefile.image.variable
+    - sed -i "/PROJECT.*:=/c\PROJECT := $CI_PROJECT_NAME" Makefile.image.variable
+    - sed -i "/PROJECT.*:=/c\PROJECT := $CI_PROJECT_NAME" Makefile.image.variable
+    - sed -i "/VCS_REF.*:=/c\VCS_REF := $CI_BUILD_REF" Makefile.metadata.variable
   artifacts:
     paths:
       - "*.variable"
@@ -70,7 +68,7 @@ release:
   script:
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - make pull
-    - cp $VARIABLES_COPY $VARIABLES
+    - cp Makefile.image.variable.copy Makefile.image.variable
     - make push
   dependencies:
     - test
