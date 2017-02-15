@@ -29,7 +29,7 @@ privileged:
 		--pull -t ${FULL_NAME}:privileged ${DOCKERFILE}
 
 test:
-	docker run -v $(shell PWD)/test:/media ${NAME}:${TAG} rsvg-convert test.svg -o test.png
+	docker run -v $(shell pwd)/test:/media ${FULL_NAME}:${TAG} rsvg-convert test.svg -o test.png
 
 clean:
 	docker rmi --force ${NAME}:baseimage ${NAME}:privileged || exit 0
