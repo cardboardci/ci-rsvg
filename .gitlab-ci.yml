@@ -16,7 +16,7 @@ stages:
 configure:
   stage: configure
   script:
-    - cp Makefile.image.variable $Makefile.image.variable.copy
+    - cp Makefile.image.variable copy.variable
     - sed -i "/REGISTRY.*:=/c\REGISTRY := $CONTAINER_REGISTRY" Makefile.image.variable
     - sed -i "/NAMESPACE.*:=/c\NAMESPACE := $CI_PROJECT_NAMESPACE" Makefile.image.variable
     - sed -i "/PROJECT.*:=/c\PROJECT := $CI_PROJECT_NAME" Makefile.image.variable
@@ -68,7 +68,7 @@ release:
   script:
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - make pull
-    - cp Makefile.image.variable.copy Makefile.image.variable
+    - cp copy.variable Makefile.image.variable
     - make push
   dependencies:
     - test
