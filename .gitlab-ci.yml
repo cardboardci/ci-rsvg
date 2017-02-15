@@ -4,7 +4,6 @@ services:
   - docker:dind
 
 variables:
-  CONTAINER_REGISTRY: registry.gitlab.com
   VARIABLES: Makefile.image.variable
   VARIABLES_COPY: Makefile.image.variable.copy
 
