@@ -2,6 +2,8 @@
 set -ex
 cd /tmp/
 
+apk update && apk upgrade
+
 apk add --update --no-cache ca-certificates coreutils tzdata bash curl librsvg make
 
 rm -rf /tmp/* /var/tmp/* /var/cache/apk/*

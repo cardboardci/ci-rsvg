@@ -1,5 +1,5 @@
-IMAGE := jrbeverly/rsvg
-VERSION := 1.0.0
-DATE := $(shell date +%Y-%m-%d:%H:%M:%S)
-DUID := 9000
-DGID := 9000
+REGISTRY := docker.io
+NAMESPACE := jrbeverly
+PROJECT := rsvg
+FULL_NAME := ${REGISTRY}/${NAMESPACE}/${PROJECT}
+NAME := ${NAMESPACE}/${PROJECT}

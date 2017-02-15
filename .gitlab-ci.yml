@@ -3,47 +3,75 @@ image: docker:latest
 services:
   - docker:dind
 
+variables:
+  CONTAINER_REGISTRY: registry.gitlab.com
+  VARIABLES: Makefile.image.variable
+  VARIABLES_COPY: Makefile.image.variable.copy
+
 before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CONTAINER_REGISTRY
   - apk --no-cache add make
 
 stages:
+  - configure
   - build
   - test
   - release
 
-build:
-  stage: build
+configure:
+  stage: configure
   script:
-    - make build
-    - make save
+    - cp $VARIABLES $VARIABLES_COPY
+    - sed -i \"/REGISTRY.*:=/c\REGISTRY := $CONTAINER_REGISTRY\" $VARIABLES
+    - sed -i \"/NAMESPACE.*:=/c\NAMESPACE := $CI_PROJECT_NAMESPACE\" $VARIABLES
+    - sed -i \"/PROJECT.*:=/c\PROJECT := $CI_PROJECT_NAME\" $VARIABLES
   artifacts:
     paths:
-      - image.tar
-  only:
-    - latest
-    - locked
-    
+      - "*.variable"
+    expire_in: 2 hours
+
+build_baseimage:
+  stage: build
+  script:
+    - make baseimage && make push
+  dependencies:
+    - configure
+  artifacts:
+    paths:
+      - "*.variable"
+    expire_in: 2 hours
+
+build_privileged:
+  stage: build
+  script:
+    - make privileged && make push
+  dependencies:
+    - configure
+  artifacts:
+    paths:
+      - "*.variable"
+    expire_in: 2 hours
+
 test:
   stage: test
   script:
-    - echo "No testing at the moment"
+    - make pull
+    - make test
+  dependencies:
+    - build_baseimage
+    - build_privileged
   artifacts:
     paths:
-      - image.tar
-  dependencies:
-    - build
-  only:
-    - latest
-    - locked
-
+      - "*.variable"
+      - test/*
+    expire_in: 2 hours
+    
 release:
   stage: release
   script:
-    - docker load --input=image.tar
-    - docker login -u $CI_BUILD_USER -p $CI_BUILD_TOKEN
+    - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
+    - make pull
+    - cp $VARIABLES_COPY $VARIABLES
     - make push
   dependencies:
-    - build
-  only:
-    - latest
-    - locked
+    - test

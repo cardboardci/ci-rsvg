@@ -42,13 +42,22 @@ USER ${USER}
 # Arguments used for the metadata of the docker container.
 ARG BUILD_DATE
 ARG VERSION
+ARG VCS_REF
 
 # Metadata 
 #
 # The metadata of the image.
-LABEL app="rsvg-convert"
-LABEL description="Turn SVG files into raster images."
-LABEL version="${VERSION}"
-LABEL build_date="${BUILD_DATE}"
-LABEL user="${DUID}"
-LABEL group="${DGID}"
+LABEL \
+    io.gitlab.jrbeverly.name="rsvg-convert" \
+    io.gitlab.jrbeverly.description="Turn SVG files into raster images." \
+    io.gitlab.jrbeverly.url="http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html" \
+    io.gitlab.jrbeverly.vendor="Gnome" \
+    io.gitlab.jrbeverly.license="MIT" \
+    io.gitlab.jrbeverly.vcs-type="Git" \
+    io.gitlab.jrbeverly.vcs-ref="${VCS_REF}" \
+    io.gitlab.jrbeverly.vcs-url="https://gitlab.com/jrbeverly-docker/docker-rsvg.git" \
+    io.gitlab.jrbeverly.ci-build-url="https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/latest" \
+    io.gitlab.jrbeverly.version="${VERSION}" \
+    io.gitlab.jrbeverly.build-date="${BUILD_DATE}" \
+    io.gitlab.jrbeverly.user="${DUID}" \
+    io.gitlab.jrbeverly.group="${DGID}" \

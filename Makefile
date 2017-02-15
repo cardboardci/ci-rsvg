@@ -1,25 +1,46 @@
+include Makefile.metadata.variable
 include Makefile.image.variable
-include Makefile.version.variable
+include Makefile.user.variable
 
-build:
+DOCKERFILE := src/.
+TAG := latest
+
+.PHONY: baseimage privileged clean prune push test pull
+
+baseimage:
 	docker build \
-		--build-arg BUILD_DATE="${DATE}" \
+		--build-arg BUILD_DATE="${BUILD_DATE}" \
 		--build-arg VERSION="${VERSION}" \
+		--build-arg VCS_REF="${VCS_REF}" \
 		--build-arg DUID="${DUID}" \
 		--build-arg DGID="${DGID}" \
-		--pull -t ${IMAGE}:${TAG} .
+		--build-arg USER="docker" \
+		--pull -t ${FULL_NAME}:latest ${DOCKERFILE}
+	docker tag ${FULL_NAME}:latest ${FULL_NAME}:baseimage
 
-save:
-	docker save --output=image.tar ${IMAGE}:${TAG}
+privileged:
+	docker build \
+		--build-arg BUILD_DATE="${BUILD_DATE}" \
+		--build-arg VERSION="${VERSION}" \
+		--build-arg VCS_REF="${VCS_REF}" \
+		--build-arg DUID="${DUID}" \
+		--build-arg DGID="${DGID}" \
+		--build-arg USER="root" \
+		--pull -t ${FULL_NAME}:privileged ${DOCKERFILE}
+
+test:
+	docker run -v $(shell PWD)/test:/media ${NAME}:${TAG} rsvg-convert test.svg -o test.png
 
 clean:
-	docker rmi --force ${IMAGE}:${TAG}
+	docker rmi --force ${NAME}:baseimage ${NAME}:privileged || exit 0
 
 prune:
 	docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi
 
-push:
-	docker push ${IMAGE}:${TAG}
+pull:
+	docker pull --all-tags ${FULL_NAME}
 
-rebuild: clean build
-all: build
+push:
+	docker push ${FULL_NAME}
+
+all: baseimage privileged
