@@ -21,9 +21,9 @@ configure:
   stage: configure
   script:
     - cp $VARIABLES $VARIABLES_COPY
-    - sed -i \"/REGISTRY.*:=/c\REGISTRY := $CONTAINER_REGISTRY\" $VARIABLES
-    - sed -i \"/NAMESPACE.*:=/c\NAMESPACE := $CI_PROJECT_NAMESPACE\" $VARIABLES
-    - sed -i \"/PROJECT.*:=/c\PROJECT := $CI_PROJECT_NAME\" $VARIABLES
+    - sed -i "/REGISTRY.*:=/c\REGISTRY := $CONTAINER_REGISTRY" $VARIABLES
+    - sed -i "/NAMESPACE.*:=/c\NAMESPACE := $CI_PROJECT_NAMESPACE" $VARIABLES
+    - sed -i "/PROJECT.*:=/c\PROJECT := $CI_PROJECT_NAME" $VARIABLES
   artifacts:
     paths:
       - "*.variable"
