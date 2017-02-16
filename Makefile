@@ -15,8 +15,8 @@ baseimage:
 		--build-arg DUID="${DUID}" \
 		--build-arg DGID="${DGID}" \
 		--build-arg USER="docker" \
-		--pull -t ${FULL_NAME}:latest ${DOCKERFILE}
-	docker tag ${FULL_NAME}:latest ${FULL_NAME}:baseimage
+		--pull -t ${FULL_NAME}:baseimage ${DOCKERFILE}
+	docker tag ${FULL_NAME}:baseimage ${FULL_NAME}:latest
 
 privileged:
 	docker build \

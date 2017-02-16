@@ -48,16 +48,17 @@ ARG VCS_REF
 #
 # The metadata of the image.
 LABEL \
-    io.gitlab.jrbeverly.name="rsvg-convert" \
-    io.gitlab.jrbeverly.description="Turn SVG files into raster images." \
-    io.gitlab.jrbeverly.url="http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html" \
-    io.gitlab.jrbeverly.vendor="Gnome" \
-    io.gitlab.jrbeverly.license="MIT" \
-    io.gitlab.jrbeverly.vcs-type="Git" \
-    io.gitlab.jrbeverly.vcs-ref="${VCS_REF}" \
-    io.gitlab.jrbeverly.vcs-url="https://gitlab.com/jrbeverly-docker/docker-rsvg.git" \
-    io.gitlab.jrbeverly.ci-build-url="https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/latest" \
-    io.gitlab.jrbeverly.version="${VERSION}" \
-    io.gitlab.jrbeverly.build-date="${BUILD_DATE}" \
-    io.gitlab.jrbeverly.user="${DUID}" \
-    io.gitlab.jrbeverly.group="${DGID}" \
+    org.label-schema.name="rsvg-convert" \
+    org.label-schema.description="Turn SVG files into raster images." \
+    org.label-schema.url="http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html" \
+    org.label-schema.vendor="Gnome" \
+    org.label-schema.schema-version="1.0" \
+    org.label-schema.license="MIT" \
+    org.label-schema.vcs-type="Git" \
+    org.label-schema.vcs-ref="${VCS_REF}" \
+    org.label-schema.vcs-url="https://gitlab.com/jrbeverly-docker/docker-rsvg.git" \
+    org.label-schema.ci-build-url="https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/latest" \
+    org.label-schema.version="${VERSION}" \
+    org.label-schema.build-date="${BUILD_DATE}" \
+    org.label-schema.user="${DUID}" \
+    org.label-schema.group="${DGID}" \
