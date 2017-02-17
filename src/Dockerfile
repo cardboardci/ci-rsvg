@@ -57,7 +57,7 @@ LABEL \
     org.label-schema.vcs-type="Git" \
     org.label-schema.vcs-ref="${VCS_REF}" \
     org.label-schema.vcs-url="https://gitlab.com/jrbeverly-docker/docker-rsvg.git" \
-    org.label-schema.ci-build-url="https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/latest" \
+    org.label-schema.ci-build-url="https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master" \
     org.label-schema.version="${VERSION}" \
     org.label-schema.build-date="${BUILD_DATE}" \
     io.gitlab.jrbeverly.user="${DUID}" \
