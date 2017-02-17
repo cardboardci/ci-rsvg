@@ -109,5 +109,5 @@ The notation of the build variables is short form for docker user id (`DUID`) an
 [^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#user-and-group-mapping)
 [alpine-badge]: https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000
 [alpine]: https://alpinelinux.org/posts/Alpine-3.5.0-released.html
-[build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/latest/build.svg
-[build]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/latest
+[build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/master/build.svg
+[build]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master
