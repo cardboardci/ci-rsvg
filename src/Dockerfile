@@ -60,5 +60,5 @@ LABEL \
     org.label-schema.ci-build-url="https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/latest" \
     org.label-schema.version="${VERSION}" \
     org.label-schema.build-date="${BUILD_DATE}" \
-    org.label-schema.user="${DUID}" \
-    org.label-schema.group="${DGID}" \
+    io.gitlab.jrbeverly.user="${DUID}" \
+    io.gitlab.jrbeverly.group="${DGID}" \

@@ -76,7 +76,7 @@ Volumes exposed by the docker container.[^1]
 
 ## Build Process
 
-To build the docker image, use the included makefile.
+To build the docker image, use the included [`Makefile`](Makefile).
 
 ```
 make baseimage
@@ -97,16 +97,16 @@ docker build \
 
 All processes within the docker container will be run as the **docker user**, a non-root user.  The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.  
 
-Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker container.  The values of `DUID` and `DGID` are visible in the [Build Arguments](#Build-Arguments), and can be accessed by the the command:
+Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker container.  The values of `DUID` and `DGID` are visible in the [Build Arguments](#build-arguments), and can be accessed by the the command:
 
 ```console
-docker inspect -f '{{ index .Config.Labels "user" }}' IMAGE
-docker inspect -f '{{ index .Config.Labels "group" }}' IMAGE
+docker inspect -f '{{ index .Config.Labels "io.gitlab.jrbeverly.user" }}' IMAGE
+docker inspect -f '{{ index .Config.Labels "io.gitlab.jrbeverly.group" }}' IMAGE
 ```
 
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
 
-[^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#User-and-Group-Mapping)
+[^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#user-and-group-mapping)
 [alpine-badge]: https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000
 [alpine]: https://alpinelinux.org/posts/Alpine-3.5.0-released.html
 [build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/latest/build.svg
