@@ -51,8 +51,7 @@ get-privileged:
 	docker pull ${CONTAINER_ROOT}
 
 pull:
-	docker pull ${CONTAINER}
-	docker pull ${CONTAINER_ROOT}
+	docker pull --all-tags ${FULL_NAME}
 
 push:
 	docker push ${FULL_NAME}
