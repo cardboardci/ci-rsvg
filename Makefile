@@ -3,9 +3,16 @@ include Makefile.image.variable
 include Makefile.user.variable
 
 DOCKERFILE := src/.
-TAG := latest
 
-.PHONY: baseimage privileged clean prune push test pull
+TAG := latest
+BASE_TAG := baseimage
+ROOT_TAG := privileged
+CONTAINER := ${FULL_NAME}:${BASE_TAG}
+CONTAINER_ROOT := ${FULL_NAME}:${ROOT_TAG}
+
+.PHONY: baseimage privileged test clean prune get-base get-privileged pull push deploy
+
+default: all
 
 baseimage:
 	docker build \
@@ -15,8 +22,8 @@ baseimage:
 		--build-arg DUID="${DUID}" \
 		--build-arg DGID="${DGID}" \
 		--build-arg USER="docker" \
-		--pull -t ${FULL_NAME}:baseimage ${DOCKERFILE}
-	docker tag ${FULL_NAME}:baseimage ${FULL_NAME}:latest
+		--pull -t ${CONTAINER} ${DOCKERFILE}
+	docker tag ${CONTAINER} ${FULL_NAME}:${TAG}
 
 privileged:
 	docker build \
@@ -26,27 +33,34 @@ privileged:
 		--build-arg DUID="${DUID}" \
 		--build-arg DGID="${DGID}" \
 		--build-arg USER="root" \
-		--pull -t ${FULL_NAME}:privileged ${DOCKERFILE}
+		--pull -t ${CONTAINER_ROOT} ${DOCKERFILE}
 
 test:
-	docker run -v $(shell pwd)/test:/media ${FULL_NAME}:${TAG} rsvg-convert test.svg -o test.png
+	docker run -v $(shell pwd)/test:/media ${FULL_NAME}:${TAG} sh test.sh
 
 clean:
-	docker rmi --force ${NAME}:baseimage ${NAME}:privileged || exit 0
+	docker rmi --force ${CONTAINER} ${CONTAINER_ROOT} || exit 0
 
 prune:
 	docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi
 
+get-base:
+	docker pull ${CONTAINER}
+
+get-privileged:
+	docker pull ${CONTAINER_ROOT}
+
 pull:
-	docker pull --all-tags ${FULL_NAME}
+	docker pull ${CONTAINER}
+	docker pull ${CONTAINER_ROOT}
 
 push:
 	docker push ${FULL_NAME}
 
 deploy:
-	docker tag ${FULL_NAME}:latest ${RELEASE}:latest
-	docker tag ${FULL_NAME}:baseimage ${RELEASE}:baseimage
-	docker tag ${FULL_NAME}:privileged ${RELEASE}:privileged
+	docker tag ${FULL_NAME}:${TAG} ${RELEASE}:${TAG}
+	docker tag ${FULL_NAME}:${BASE_TAG} ${RELEASE}:${BASE_TAG}
+	docker tag ${FULL_NAME}:${ROOT_TAG} ${RELEASE}:${ROOT_TAG}
 	docker push ${RELEASE}
 
 all: baseimage privileged

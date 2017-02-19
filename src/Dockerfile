@@ -14,12 +14,12 @@ RUN sh /tmp/install && rm -f /tmp/install
 
 # Volumes
 #
-# Volumes exposed by the docker container
+# Volumes exposed by the docker container.
 VOLUME /media
 
 # Options
 #
-# Configuration options of the docker container
+# Configuration options of the docker container.
 WORKDIR /media
 ENTRYPOINT []
 CMD []
@@ -37,7 +37,7 @@ ARG USER
 RUN addgroup -g ${DGID} -S docker && adduser -S -G docker -u ${DUID} docker
 USER ${USER}
 
-# Metdata Arguments
+# Metadata Arguments
 #
 # Arguments used for the metadata of the docker container.
 ARG BUILD_DATE

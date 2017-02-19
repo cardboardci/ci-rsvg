@@ -1,0 +1,71 @@
+#!/bin/sh
+
+#!/bin/bash
+set -e
+
+# Variables
+#
+# List of variables used in the build process.
+VAR_IMAGE="Makefile.image.variable"
+VAR_METADATA="Makefile.metadata.variable"
+
+# Preconfig Functions
+#
+# Functions used to preconfigure the build process.
+init () {
+    REGISTRY=""
+    NAMESPACE=""
+    PROJECT=""
+
+    while getopts "h?:r:n:p:" opt; do
+        case $opt in
+            h|\?)
+                echo "Usage: $0 init -r REGISTRY -n NAMESPACE -p PROJECT"
+                echo
+                echo "Sets the full image name of the build process." 
+                exit 0
+            ;;
+            r) REGISTRY=$OPTARG
+            ;;
+            n) NAMESPACE=$OPTARG
+            ;;
+            p) PROJECT=$OPTARG
+            ;;
+        esac
+    done
+
+    rm -f $output
+    echo "REGISTRY=$REGISTRY"
+    echo "NAMESPACE=$NAMESPACE"
+    echo "PROJECT=$PROJECT"
+
+    sed -i "/REGISTRY.*:=/c\REGISTRY := $REGISTRY" $VAR_IMAGE
+    sed -i "/NAMESPACE.*:=/c\NAMESPACE := $NAMESPACE" $VAR_IMAGE
+    sed -i "/PROJECT.*:=/c\PROJECT := $PROJECT" $VAR_IMAGE
+}
+
+metadata () {
+    VCS_REF=""
+
+    while getopts "h?:c:" opt; do
+        case $opt in
+            h|\?)
+                echo "Usage: $0 metadata -c VCS_REF"
+                echo
+                echo "Sets the metadata contents of the build process." 
+                exit 0
+            ;;
+            c) REGISTRY=$OPTARG
+            ;;
+        esac
+    done
+
+    echo "VCS_REF=$VCS_REF"
+
+    sed -i "/VCS_REF.*:=/c\VCS_REF := $VCS_REF" $VAR_METADATA
+}
+
+# Execution
+#
+# Executing the script.
+"$@"
