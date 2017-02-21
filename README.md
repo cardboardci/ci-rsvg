@@ -25,7 +25,7 @@ docker run -v /media/:/media/ jrbeverly/rsvg rsvg-convert test.svg -o test.png
 ```
 
 ### Gitlab
-You can add a build job with `.gitlab-ci.yml`
+You can setup a build job using `.gitlab-ci.yml`:
 
 ```yaml
 compile_pdf:
@@ -43,7 +43,7 @@ Build tags available with the image `jrbeverly/rsvg:{TAG}`.
 
 | Tag | Status | Description |
 | --- | ------ | ----------- |
-| [![Version base][base-badge]][base-link] | [![Image base][base-image-badge]][base-link] | A docker image with librsvg installed, with a non-root running user. |
+| [![Version base][base-badge]][base-link] | [![Image base][base-image-badge]][base-link] | A docker image with librsvg installed, running as docker user (`DUID`). |
 | [![Version privileged][privileged-badge]][privileged-link] | [![Image privileged][privileged-image-badge]][privileged-link]  | A docker image with librsvg installed. |
 
 ## Components
