@@ -122,7 +122,7 @@ docker inspect -f '{{ index .Config.Labels "io.gitlab.jrbeverly.group" }}' IMAGE
 
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
 
-[^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#user-and-group-mapping)
+[^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#user-and-group-mapping))
 
 [build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/master/build.svg
 [build-link]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master
