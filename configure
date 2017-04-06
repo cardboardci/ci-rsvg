@@ -55,7 +55,7 @@ metadata () {
                 echo "Sets the metadata contents of the build process." 
                 exit 0
             ;;
-            c) REGISTRY=$OPTARG
+            c) VCS_REF=$OPTARG
             ;;
         esac
     done
