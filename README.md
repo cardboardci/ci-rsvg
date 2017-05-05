@@ -76,14 +76,14 @@ Volumes exposed by the docker container.[^1]
 
 ## Build Process
 
-To build the docker image, use the included [`Makefile`](Makefile). It is recommended to use the makefile to ensure all build arguments are provided.
+To build the docker image, use the included [`Makefile`](build/Makefile). It is recommended to use the makefile to ensure all build arguments are provided.
 
 ```
 make baseimage
 make privileged
 ```
 
-You can also build the image manually, as visible in [`Makefile`](Makefile).  However this is discouraged as the makefile ensures all build arguments are properly formatted.
+You can also build the image manually, as visible in [`Makefile`](build/Makefile).  However this is discouraged as the makefile ensures all build arguments are properly formatted.
 
 ## Labels
 
@@ -121,7 +121,7 @@ The notation of the build variables is short form for docker user id (`DUID`) an
 [license-link]: https://microbadger.com/images/jrbeverly/rsvg "Get your own license badge on microbadger.com"
 
 [image-badge]: https://img.shields.io/badge/alpine-3.5-orange.svg?maxAge=2592000
-[image-link]: https://hub.docker.com/jrbeverly/baseimage/
+[image-link]: https://hub.docker.com/r/jrbeverly/baseimage/
 
 [base-badge]: https://images.microbadger.com/badges/version/jrbeverly/rsvg:baseimage.svg
 [base-image-badge]: https://images.microbadger.com/badges/image/jrbeverly/rsvg:baseimage.svg
