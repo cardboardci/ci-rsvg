@@ -21,7 +21,7 @@ A super small Alpine image with rsvg-convert installed.
 You can use this image locally with `docker run`, calling [`rsvg-convert`](http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html) as such:
 
 ```console
-docker run -v /media/:/media/ jrbeverly/rsvg rsvg-convert test.svg -o test.png
+docker run -v /media/:/media/ jrbeverly/rsvg:baseimage rsvg-convert test.svg -o test.png
 ```
 
 ### Gitlab
@@ -29,7 +29,7 @@ You can setup a build job using `.gitlab-ci.yml`:
 
 ```yaml
 compile_pdf:
-  image: jrbeverly/rsvg
+  image: jrbeverly/rsvg:baseimage
   script:
     - rsvg-convert test.svg -o test.png
   artifacts:
@@ -54,9 +54,9 @@ Metadata build arguments used in the system, the follow the [Label Schema Conven
 
 | Variable | Value | Description |
 | -------- | ----- |------------ |
-| BUILD_DATE | see [metadata.variable](Makefile.metadata.variable) | The Date/Time the image was built. |
-| VERSION | see [metadata.variable](Makefile.metadata.variable) | Release identifier for the contents of the image. |
-| VCS_REF | see [metadata.variable](Makefile.metadata.variable) | Identifier for the version of the source code from which this image was built. |
+| BUILD_DATE | see [metadata.variable](build/Makefile.metadata.variable) | The Date/Time the image was built. |
+| VERSION | see [metadata.variable](build/Makefile.metadata.variable) | Release identifier for the contents of the image. |
+| VCS_REF | see [metadata.variable](build/Makefile.metadata.variable) | Identifier for the version of the source code from which this image was built. |
 
 ### Build Arguments
 
@@ -64,9 +64,7 @@ Build arguments used in the system.
 
 | Variable | Value | Description |
 | -------- | ------- |------------ |
-| DUID | see [user.variable](Makefile.user.variable) | The [user id](http://www.linfo.org/uid.html) of the docker user. |
-| DGID | see [user.variable](Makefile.user.variable) | The [group id](http://www.linfo.org/uid.html) of the docker user's group. |
-| USER | see [Makefile](Makefile) | Sets the [user](http://www.linfo.org/uid.html) to use when running the image. |
+| USER | see [Makefile](build/Makefile) | Sets the [user](http://www.linfo.org/uid.html) to use when running the image. |
 
 ### Volumes
 
@@ -75,14 +73,6 @@ Volumes exposed by the docker container.[^1]
 | Volume | Description |
 | ------ | ----------- |
 | /media/ | The root directory containing files. |
-
-### Environment Variables
-
-Environment variables used in the system.
-
-| Variable | Default | Description |
-| -------- | ------- |------------ |
-| HOME | / | The pathname of the user's home directory. |
 
 ## Build Process
 
@@ -131,7 +121,7 @@ The notation of the build variables is short form for docker user id (`DUID`) an
 [license-link]: https://microbadger.com/images/jrbeverly/rsvg "Get your own license badge on microbadger.com"
 
 [image-badge]: https://img.shields.io/badge/alpine-3.5-orange.svg?maxAge=2592000
-[image-link]: https://hub.docker.com/_/alpine/
+[image-link]: https://hub.docker.com/jrbeverly/baseimage/
 
 [base-badge]: https://images.microbadger.com/badges/version/jrbeverly/rsvg:baseimage.svg
 [base-image-badge]: https://images.microbadger.com/badges/image/jrbeverly/rsvg:baseimage.svg

@@ -1,0 +1,1 @@
+A super small Alpine image with rsvg-convert installed.

@@ -1,10 +1,5 @@
-FROM alpine:3.5
+FROM jrbeverly/baseimage:3.5
 MAINTAINER jrbeverly
-
-# Environment Variables
-#
-# Environment variables present in the docker container.
-ENV HOME=/
 
 # Provision
 #
@@ -12,29 +7,14 @@ ENV HOME=/
 COPY provision/install /tmp/install
 RUN sh /tmp/install && rm -f /tmp/install 
 
-# Volumes
-#
-# Volumes exposed by the docker container.
-VOLUME /media
-
-# Options
-#
-# Configuration options of the docker container.
-WORKDIR /media
-ENTRYPOINT []
-CMD []
-
 # User Arguments
 #
 # Arguments used in the user process of the docker container.
-ARG DUID
-ARG DGID
 ARG USER
 
 # User
 #
 # Configuration of the docker user for container execution.
-RUN addgroup -g ${DGID} -S docker && adduser -S -G docker -u ${DUID} docker
 USER ${USER}
 
 # Metadata Arguments
@@ -58,6 +38,4 @@ LABEL \
     org.label-schema.vcs-url="https://gitlab.com/jrbeverly-docker/docker-rsvg.git" \
     org.label-schema.vendor="jrbeverly" \
     org.label-schema.version=$VERSION \
-    org.label-schema.schema-version="1.0" \
-    io.gitlab.jrbeverly.user="${DUID}" \
-    io.gitlab.jrbeverly.group="${DGID}"
+    org.label-schema.schema-version="1.0"

@@ -4,66 +4,18 @@ services:
   - docker:dind
 
 before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CONTAINER_REGISTRY
   - apk --no-cache add make
 
 stages:
-  - configure
   - build
-  - test
-  - release
 
-configure:
-  stage: configure
-  script:
-    - sh configure init -r $CONTAINER_REGISTRY -n $CI_PROJECT_NAMESPACE -p $CI_PROJECT_NAME
-    - sh configure metadata -c $CI_BUILD_REF
-  artifacts:
-    paths:
-      - "*.variable"
-    expire_in: 2 hours
+variables:
+  GIT_COMMIT: "${CI_COMMIT_SHA}"
 
 build-base:
   stage: build
   script:
-    - make baseimage && make push
-  dependencies:
-    - configure
-  artifacts:
-    paths:
-      - "*.variable"
-    expire_in: 2 hours
-
-build-privileged:
-  stage: build
-  script:
-    - make privileged && make push
-  dependencies:
-    - configure
-  artifacts:
-    paths:
-      - "*.variable"
-    expire_in: 2 hours
-
-test:
-  stage: test
-  script:
-    - make get-base
+    - make all
     - make test
-  dependencies:
-    - build-base
-    - build-privileged
-  artifacts:
-    paths:
-      - "*.variable"
-      - test/*
-    expire_in: 2 hours
-
-release:
-  stage: release
-  script:
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
-    - make pull
-    - make deploy
-  dependencies:
-    - test
+    - make push
