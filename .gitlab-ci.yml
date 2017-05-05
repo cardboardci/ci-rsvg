@@ -15,6 +15,7 @@ variables:
 build-base:
   stage: build
   script:
+    - cd build/
     - make all
     - make test
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
