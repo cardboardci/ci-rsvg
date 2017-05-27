@@ -1,11 +1,11 @@
-FROM jrbeverly/baseimage:3.5
+FROM jrbeverly/baseimage:alpine-3.5
 MAINTAINER jrbeverly
 
 # Provision
 #
 # Copy and execute provisioning scripts of the docker container.
-COPY provision/install /tmp/install
-RUN sh /tmp/install && rm -f /tmp/install 
+COPY provision/install.sh /tmp/install.sh
+RUN sh /tmp/install.sh && rm -f /tmp/install.sh
 
 # User Arguments
 #
@@ -36,6 +36,4 @@ LABEL \
     org.label-schema.vcs-type="Git" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url="https://gitlab.com/jrbeverly-docker/docker-rsvg.git" \
-    org.label-schema.vendor="jrbeverly" \
-    org.label-schema.version=$VERSION \
-    org.label-schema.schema-version="1.0"
+    org.label-schema.version=$VERSION
