@@ -1,0 +1,9 @@
+# Image
+TAG := baseimage
+
+# Build Args
+USER := docker
+
+# Filepath
+PATH_DOCKER := $(PATH_ROOT)/src
+PATH_DOCKERFILE := $(PATH_DOCKER)/Dockerfile
