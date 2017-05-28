@@ -10,15 +10,19 @@ services:
 stages:
   - build
   - test
-  - release
+  - deploy
 
 variables:
-  REGISTRY: registry.gitlab.com
-  NAMESPACE: jrbeverly-docker
-  PROJECT: docker-rsvg
+  STAGING_REGISTRY: registry.gitlab.com
+  STAGING_NAMESPACE: jrbeverly-docker
+  STAGING_PROJECT: docker-rsvg
+
+  REGISTRY: docker.io
+  NAMESPACE: jrbeverly
+  PROJECT: rsvg
+
   GIT_COMMIT: ${CI_COMMIT_SHA}
   PREFIX_TAG: ${CI_PIPELINE_ID}-
-  RELEASE_IMAGE: docker.io/jrbeverly/rsvg
 
 # ----------------------------------------
 # Prescript
@@ -35,10 +39,10 @@ before_script:
 build-baseimage:
   stage: build
   variables: 
-    IMAGE_VERSION: baseimage
+    VERSION: baseimage
   script:
-    - make -C build/ $IMAGE_VERSION
-    - make -C build/ TAG=$IMAGE_VERSION push
+    - make -C build/ build
+    - make -C build/ push
   only:
     - triggers
     - /^version-.*$/
@@ -48,10 +52,10 @@ build-baseimage:
 build-privileged:
   stage: build
   variables: 
-    IMAGE_VERSION: privileged
+    VERSION: privileged
   script:
-    - make -C build/ $IMAGE_VERSION
-    - make -C build/ TAG=$IMAGE_VERSION push
+    - make -C build/ build
+    - make -C build/ push
   only:
     - triggers
     - /^version-.*$/
@@ -65,10 +69,10 @@ build-privileged:
 test-baseimage:
   stage: test
   variables: 
-    IMAGE_VERSION: baseimage
+    VERSION: baseimage
   script:
-    - make -s -C build/ TAG=$IMAGE_VERSION pull
-    - make -s -C build/ TAG=$IMAGE_VERSION test
+    - make -s -C build/ pull
+    - make -s -C build/ test
   dependencies:
     - build-baseimage
   only:
@@ -80,10 +84,10 @@ test-baseimage:
 test-privileged:
   stage: test
   variables: 
-    IMAGE_VERSION: privileged
+    VERSION: privileged
   script:
-    - make -s -C build/ TAG=$IMAGE_VERSION pull
-    - make -s -C build/ TAG=$IMAGE_VERSION test
+    - make -s -C build/ pull
+    - make -s -C build/ test
   dependencies:
     - build-privileged
   only:
@@ -93,17 +97,19 @@ test-privileged:
     - branches
 
 # ----------------------------------------
-# Release
+# Deploy
 # ----------------------------------------
 
-release:
-  stage: release
+deploy:
+  stage: deploy
   script:
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
-    - make -C build/ TAG=baseimage pull
-    - make -C build/ TAG=privileged pull
-    - make -C build/ TAG=baseimage release
-    - make -C build/ TAG=privileged release
+    - make -C build/ VERSION=baseimage pull
+    - make -C build/ VERSION=privileged pull
+    - make -C build/ VERSION=baseimage release
+    - make -C build/ VERSION=privileged release
+    - make -C build/ VERSION=baseimage deploy
+    - make -C build/ VERSION=privileged deploy
   dependencies:
     - test-baseimage
     - test-privileged
