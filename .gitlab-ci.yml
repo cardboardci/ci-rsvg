@@ -22,7 +22,7 @@ variables:
   PROJECT: rsvg
 
   GIT_COMMIT: ${CI_COMMIT_SHA}
-  PREFIX_TAG: ${CI_PIPELINE_ID}-
+  TAG_PREFIX: ${CI_PIPELINE_ID}-
 
 # ----------------------------------------
 # Prescript
