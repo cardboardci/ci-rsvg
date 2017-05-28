@@ -4,7 +4,7 @@
 PATH_BUILD := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PATH_ROOT := $(shell dirname $(PATH_BUILD))
 PATH_VERSIONS := $(PATH_ROOT)/versions
-PATH_TESTS := $(PATH_ROOT)/tests
+PATH_TESTS := $(PATH_ROOT)/test
 
 # Mount Path Variables
 #

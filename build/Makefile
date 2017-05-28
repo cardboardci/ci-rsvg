@@ -117,7 +117,7 @@ build: check-path check-tag
 
 # Tests the working docker image
 test: check-version check-tag check-test
-	sh ${MOUNT_TESTS}/test_${VERSION}.sh $(WORKING_IMAGE)
+	docker run --rm -v $(MOUNT_TESTS):/media $(WORKING_IMAGE) sh test_${VERSION}.sh
 
 # Registry 
 #
@@ -145,8 +145,8 @@ deploy: check-version check-tag
 
 # Ensures that the test path is valid
 check-test:
-ifeq (,$(wildcard $(${MOUNT_TESTS}/test_${VERSION}.sh)))
-	$(error The testing for version [$(VERSION)] is not valid for this image.  See versions/ for possible image versions)
+ifeq (,$(wildcard $(PATH_TESTS)/test_$(VERSION).sh))
+	$(error The testing for version [$(VERSION)] is not valid for this image.  See versions/ for possible image versions [$(PATH_TESTS)/test_$(VERSION).sh])
 endif
 
 # Ensures that the tag is set
