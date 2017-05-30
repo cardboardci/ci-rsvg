@@ -1,5 +1,4 @@
 #!/bin/sh
-set -ex
 
 # Variables
 #
@@ -17,5 +16,5 @@ for dirname in *
 do
   test -d "$dirname" || continue
 
-  make -C "${BUILD_DIR}" VERSION=${dirname} build
+  make -s -C "${BUILD_DIR}" VERSION=${dirname} build
 done
