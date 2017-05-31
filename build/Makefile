@@ -44,7 +44,8 @@ WORKING_IMAGE ?= $(STAGING_IMAGE):$(TAG_PREFIX)$(TAG)$(TAG_SUFFIX)
 ## 
 ## Rules
 ##
-.PHONY: build test prune purge clean debug pull push release image debug check-env
+.PHONY: build test prune purge clean debug pull push release image info debug check-env
+default: info
 
 # Output
 #
