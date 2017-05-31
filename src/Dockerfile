@@ -43,7 +43,7 @@ LABEL \
     org.label-schema.docker.cmd="docker run -v /media/:/media/ jrbeverly/rsvg:baseimage rsvg-convert test.svg -o test.png" \
     \
     io.jrbeverly.project="rsvg" \
-    io.jrbeverly.summary="Runs the application as the $USER user." \
+    io.jrbeverly.summary="A docker image with librsvg installed, running as $USER user." \
     io.jrbeverly.rsvg.meta.BUILD_DATE="The Date/Time the image was built." \
     io.jrbeverly.rsvg.meta.VERSION="Release identifier for the contents of the image." \
     io.jrbeverly.rsvg.meta.VCS_REF="Identifier for the version of the source code from which this image was built." \
