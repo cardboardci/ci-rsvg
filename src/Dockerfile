@@ -29,7 +29,7 @@ ARG VCS_REF
 LABEL \
     maintainer="jrbeverly" \
     \
-    org.label-schema.name="rsvg" \
+    org.label-schema.name="librsvg" \
     org.label-schema.summary="A super small Alpine image with rsvg-convert installed." \
     org.label-schema.description="Turn SVG files into raster images." \
     org.label-schema.maintainer="jrbeverly" \
