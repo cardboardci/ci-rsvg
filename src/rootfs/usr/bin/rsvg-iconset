@@ -20,7 +20,7 @@ ICON=""
 OUTPUT="$PWD"
 
 #
-# Arguments
+# Options
 #
 OPTIND=1 
 while getopts "h?o:f:" opt; do
@@ -46,9 +46,9 @@ case $OUTPUT in
   *) OUTPUT=$PWD/$OUTPUT;;
 esac
 
+# 
 # Rasterized
 #
-# Rasterizes the scalable vector graphics.
 echo "Rasterizing the provided icon: $ICON"
 echo "Outputting to directory: $OUTPUT"
 

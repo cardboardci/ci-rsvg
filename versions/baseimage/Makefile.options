@@ -3,6 +3,7 @@ TAG := baseimage
 
 # Build Args
 USER := docker
+BUILD_PARAMS := --build-arg USER="${USER}"
 
 # Filepath
 PATH_DOCKER := $(PATH_ROOT)/src
