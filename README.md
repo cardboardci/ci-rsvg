@@ -68,19 +68,21 @@ Build arguments used in the system.
 
 ### Volumes
 
-Volumes exposed by the docker container.[^1]
+Volumes exposed by the docker container.
 
 | Volume | Description |
 | ------ | ----------- |
 | /media/ | The root directory containing files. |
+
+It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#user-and-group-mapping))
 
 ## Build Process
 
 To build the docker image, use the included [`Makefile`](build/Makefile). It is recommended to use the makefile to ensure all build arguments are provided.
 
 ```
-make baseimage
-make privileged
+make VERSION=baseimage build
+make VERSION=privileged build
 ```
 
 You can also build the image manually, as visible in [`Makefile`](build/Makefile).  However this is discouraged as the makefile ensures all build arguments are properly formatted.
@@ -93,10 +95,10 @@ The docker image follows the [Label Schema Convention](http://label-schema.org).
 docker inspect -f '{{ index .Config.Labels "org.label-schema.LABEL" }}' IMAGE
 ```
 
-The label namespace `io.gitlab.jrbeverly` is common among `jrbeverly-docker` images and is a loosely structured set of values.  The values in the namespace can be accessed by the following command:
+The label namespace `io.jrbeverly` is common among `jrbeverly-docker` images and is a loosely structured set of values.  The values in the namespace can be accessed by the following command:
 
 ```console
-docker inspect -f '{{ index .Config.Labels "io.gitlab.jrbeverly.LABEL" }}' IMAGE
+docker inspect -f '{{ index .Config.Labels "io.jrbeverly.LABEL" }}' IMAGE
 ```
 
 ## User and Group Mapping
@@ -106,13 +108,11 @@ All processes within the docker container will be run as the **docker user**, a 
 Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker user.  The values of `DUID` and `DGID` are visible in the [Build Arguments](#build-arguments), and can be accessed by the commands:
 
 ```console
-docker inspect -f '{{ index .Config.Labels "io.gitlab.jrbeverly.user" }}' IMAGE
-docker inspect -f '{{ index .Config.Labels "io.gitlab.jrbeverly.group" }}' IMAGE
+docker inspect -f '{{ index .Config.Labels "io.jrbeverly.user" }}' IMAGE
+docker inspect -f '{{ index .Config.Labels "io.jrbeverly.group" }}' IMAGE
 ```
 
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
-
-[^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#user-and-group-mapping))
 
 [build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/master/build.svg
 [build-link]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master

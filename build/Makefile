@@ -9,6 +9,7 @@ DEFAULT_VERSION := -no-version-set-
 VERSION ?= $(DEFAULT_VERSION)
 TAG_SUFFIX ?=
 TAG_PREFIX ?=
+BUILD_PARAMETERS =
 
 # Validation
 #
@@ -44,7 +45,8 @@ WORKING_IMAGE ?= $(STAGING_IMAGE):$(TAG_PREFIX)$(TAG)$(TAG_SUFFIX)
 ## 
 ## Rules
 ##
-.PHONY: build test prune purge clean debug pull push release image debug check-env
+.PHONY: build test prune purge clean debug pull push release image info debug check-env
+default: info
 
 # Output
 #
@@ -72,6 +74,9 @@ info:
 	@echo PATH_ROOT = $(PATH_ROOT)
 	@echo PATH_VERSIONS = $(PATH_VERSIONS)
 	@echo PATH_TESTS = $(PATH_TESTS)
+	@echo
+	@echo Versions:
+	@echo $(shell ls ${PATH_VERSIONS} | tr "\n" " " )
 
 # Tidy Up
 #
@@ -107,7 +112,7 @@ build: check-path check-tag
 		--build-arg VERSION="${CODE_VERSION}" \
 		--build-arg VCS_REF="${GIT_COMMIT}" \
 		\
-		--build-arg USER="${USER}" \
+		$(BUILD_PARAMS) \
 		\
 		-f $(PATH_DOCKERFILE) $(PATH_DOCKER)/. \
 

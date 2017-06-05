@@ -1,0 +1,60 @@
+#!/bin/sh
+
+#
+# Functions
+#
+function show_help() {
+    echo "Usage: $0 [options] [-f <file>] [-o <directory>]"
+    echo
+    echo "Options:"
+    echo "  -f  The icon."
+    echo "  -h  Show help information."
+    echo "  -o  Sets the output directory for files."
+    echo "Creates a set of icons in varying sizes based on the provided scalable vector graphic." 
+}
+
+# 
+# Variables
+#
+ICON=""
+OUTPUT="$PWD"
+
+#
+# Options
+#
+OPTIND=1 
+while getopts "h?o:f:" opt; do
+    case "$opt" in
+    h|\?)
+        show_help
+        exit 0
+        ;;
+    o)  OUTPUT=${OPTARG}
+        ;;
+    f)  ICON=${OPTARG}
+        ;;
+    esac
+done
+
+if [ ! -n "$ICON" ]; then
+    echo "The icon to convert was not set."
+    exit 1
+fi
+
+case $OUTPUT in
+  /*) OUTPUT=$OUTPUT;;
+  *) OUTPUT=$PWD/$OUTPUT;;
+esac
+
+# 
+# Rasterized
+#
+echo "Rasterizing the provided icon: $ICON"
+echo "Outputting to directory: $OUTPUT"
+
+mkdir -p $OUTPUT
+rsvg-convert -h 256 -f svg "$ICON" > "$OUTPUT/icon.svg"
+for height in 32 64 128 256 512 1028 2048 4086
+do
+    rsvg-convert -h $height -f png "$ICON" > "$OUTPUT/icon-$height.png"
+done
