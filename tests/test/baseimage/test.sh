@@ -1,26 +1,26 @@
 #!/bin/sh
 
+#
 # Variables
 #
-# Variables of the script.
 SCRIPT=$(readlink -f "$0")
 DIR="$(dirname $SCRIPT)"
-ROOT_DIR="$(dirname $DIR)"
-BIN_DIR="${DIR}/target"
-DATA_DIR="${DIR}/resources"
-LIB_DIR="${DIR}/lib"
+DIR_TESTS="$(dirname $(dirname $DIR))"
 
+DIR_LIBRARY="${DIR_TESTS}/lib"
+DIR_RESOURCES="${DIR_TESTS}/resources"
+DIR_TARGET="${DIR_TESTS}/target"
+
+#
 # Tests
 #
-# The functions that test certain functionality.
+source $DIR_LIBRARY/testbase.sh
 
-source $LIB_DIR/testbase.sh
-
+# 
 # Test Runner
 #
-# Runs the tests.
 (
-    mkdir -p $BIN_DIR
+    mkdir -p $DIR_TARGET
     (
       RESULT=$(install)
       assertNotEquals "cannot install to image" 0 $?

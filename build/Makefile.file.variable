@@ -1,25 +1,35 @@
+# 
 # Path Variables
 #
-# Path variables that define the structure of the project.
 PATH_BUILD := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PATH_ROOT := $(shell dirname $(PATH_BUILD))
 PATH_VERSIONS := $(PATH_ROOT)/versions
-PATH_TESTS := $(PATH_ROOT)/test
+PATH_TESTS := $(PATH_ROOT)/tests
+PATH_INFO := $(PATH_ROOT)/info
 
+#
+# Makefile Variables
+#
+PATH_IMAGEFILE ?= $(PATH_INFO)/Makefile.image.variable
+PATH_VERSIONFILE ?= $(PATH_INFO)/Makefile.version.variable
+
+# 
 # Mount Path Variables
 #
-# Variables that define paths that can mounted in a `docker run` command.
 MOUNT_ROOT := $(PATH_ROOT)
 MOUNT_TESTS := $(PATH_TESTS)
+MOUNT_INFO := $(PATH_INFO)
 
 ifeq ($(OS),Windows_NT)
 	MOUNT_ROOT := $(shell cygpath -u $(MOUNT_ROOT))
     MOUNT_TESTS := $(shell cygpath -u $(MOUNT_TESTS))
+	MOUNT_INFO := $(shell cygpath -u $(PATH_INFO))
 endif
 
+# 
 # Docker Path Variables
 #
-# The path to the Dockerfile for build
 PATH_DOCKER ?= $(PATH_VERSIONS)/$(VERSION)
+PATH_DOCKER_TEST ?= $(PATH_TESTS)/test/$(VERSION)
 PATH_DOCKERFILE ?= $(PATH_VERSIONS)/$(VERSION)/Dockerfile
 PATH_OPTIONS ?= $(PATH_VERSIONS)/$(VERSION)/Makefile.options

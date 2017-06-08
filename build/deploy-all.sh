@@ -1,22 +1,21 @@
 #!/bin/sh
 
+#
 # Variables
 #
-# Variables of the script.
 SCRIPT=$(readlink -f "$0")
 DIR="$(dirname $SCRIPT)"
 ROOT_DIR="$(dirname $DIR)"
 BUILD_DIR="${ROOT_DIR}/build"
+VERSIONS_DIR="${ROOT_DIR}/versions"
 
-# Rasterizing
 #
-# Rasterizes the scalable vector graphics.
-cd "${ROOT_DIR}/versions"
-for dirname in *
-do
-  test -d "$dirname" || continue
-
-  make -s -C "${BUILD_DIR}" VERSION=${dirname} pull
-  make -s -C "${BUILD_DIR}" VERSION=${dirname} release
-  make -s -C "${BUILD_DIR}" VERSION=${dirname} push
+# Executing
+#
+for dirname in $(ls -d $VERSIONS_DIR/*/); 
+do 
+  version=$(basename $dirname); 
+  make -s -C "${BUILD_DIR}" VERSION=${version} pull
+  make -s -C "${BUILD_DIR}" VERSION=${version} release
+  make -s -C "${BUILD_DIR}" VERSION=${version} push
 done

@@ -1,4 +1,4 @@
-FROM jrbeverly/baseimage:alpine-3.5
+FROM jrbeverly/baseimage:alpine
 
 #
 # Provision

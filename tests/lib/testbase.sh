@@ -1,15 +1,15 @@
 #!/bin/sh
 
+#
 # Variables
 #
-# Variables of the script.
 SCRIPT=$(readlink -f "$0")
 DIR="$(dirname $SCRIPT)"
-ROOT_DIR="$(dirname $DIR)"
+DIR_ROOT="$(dirname $DIR)"
 
 # Tests
 #
-# The functions that test certain functionality.
+# A set of common functions that should be tested on the docker image.
 
 function install()
 {
@@ -18,12 +18,12 @@ function install()
 
 function simple_svg()
 {
-    rsvg-convert $DATA_DIR/test.svg -o $BIN_DIR/test.png
+    rsvg-convert resources/test.svg -o target/test.png
 }
 
 # Framework
 #
-# The functions for the framework
+# Assertion functions used by the test functions.
 
 function assertEquals()
 {
