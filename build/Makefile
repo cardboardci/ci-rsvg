@@ -1,6 +1,5 @@
 include Makefile.file.variable
 include Makefile.metadata.variable
-include Makefile.image.variable
 
 # Variables
 #
@@ -26,6 +25,15 @@ ifeq (,$(wildcard $(PATH_OPTIONS)))
 $(error The version [$(VERSION)] is incorrectly setup and does not have a 'Makefile.options')
 endif
 include $(PATH_OPTIONS)
+endif
+
+ifeq (,$(wildcard $(PATH_IMAGEFILE)))
+$(error The docker image is defined in 'info/')
+endif
+include $(PATH_IMAGEFILE)
+
+ifeq (,$(wildcard $(PATH_VERSIONFILE)))
+$(error The version of the docker image is not present in 'info/')
 endif
 
 # Registry
@@ -123,7 +131,7 @@ build: check-path check-tag
 # Tests the working docker image
 test: check-version check-tag check-test
 	@echo Running '$(VERSION)' tests on $(WORKING_IMAGE).
-	docker run --rm -v $(MOUNT_TESTS):/media $(WORKING_IMAGE) sh test_${VERSION}.sh
+	docker run --rm -v $(MOUNT_TESTS):/media $(WORKING_IMAGE) sh test/$(VERSION)/test.sh
 
 # Registry 
 #
@@ -151,8 +159,8 @@ deploy: check-version check-tag
 
 # Ensures that the test path is valid
 check-test:
-ifeq (,$(wildcard $(PATH_TESTS)/test_$(VERSION).sh))
-	$(error The testing for version [$(VERSION)] is not valid for this image.  See versions/ for possible image versions [$(PATH_TESTS)/test_$(VERSION).sh])
+ifeq (,$(wildcard $(PATH_DOCKER_TEST)/test.sh))
+	$(error The testing for version [$(VERSION)] is not valid for this image.  See tests/test/ for possible image versions [$(PATH_DOCKER_TEST)/test.sh])
 endif
 
 # Ensures that the tag is set
