@@ -11,12 +11,12 @@ DIR_ROOT="$(dirname $DIR)"
 #
 # A set of common functions that should be tested on the docker image.
 
-function install()
+install()
 {
     apk add --update zip >/dev/null 2>&1
 }
 
-function simple_svg()
+simple_svg()
 {
     rsvg-convert resources/test.svg -o target/test.png
 }
@@ -25,7 +25,7 @@ function simple_svg()
 #
 # Assertion functions used by the test functions.
 
-function assertEquals()
+assertEquals()
 {
     msg=$1
     expected=$2
@@ -38,7 +38,7 @@ function assertEquals()
     fi
 }
 
-function assertNotEquals()
+assertNotEquals()
 {
     msg=$1
     expected=$2
