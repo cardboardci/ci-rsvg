@@ -14,12 +14,14 @@ DIR_TARGET="${DIR_TESTS}/target"
 #
 # Tests
 #
-source $DIR_LIBRARY/testbase.sh
+. $DIR_LIBRARY/testbase.sh
+. $DIR_LIBRARY/functions.sh
 
 # 
 # Test Runner
 #
 (
+    rm -rf $DIR_TARGET
     mkdir -p $DIR_TARGET
     (
       RESULT=$(install)

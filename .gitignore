@@ -1,5 +1,5 @@
 .DS_Store
 .vagrant
 *.swp
-test/target/
+tests/target/
 doc/images/
