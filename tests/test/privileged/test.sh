@@ -23,6 +23,7 @@ DIR_TARGET="${DIR_TESTS}/target"
 (
     rm -rf $DIR_TARGET
     mkdir -p $DIR_TARGET
+    
     (
       RESULT=$(install)
       assertEquals "install to image" 0 $?
