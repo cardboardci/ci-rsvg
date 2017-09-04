@@ -1,5 +1,8 @@
-.DS_Store
-.vagrant
-*.swp
+## Editors:
+.vscode/
+
+## Documentation images:
+doc/**/images/
+
+## Test outputs:
 tests/target/
-doc/images/
