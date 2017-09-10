@@ -2,7 +2,7 @@
 .vscode/
 
 ## Documentation images:
-doc/**/images/
+docs/**/images/
 
 ## Test outputs:
 tests/target/

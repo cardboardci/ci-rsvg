@@ -11,7 +11,7 @@ PATH_INFO := $(PATH_ROOT)/info
 # Makefile Variables
 #
 PATH_IMAGEFILE ?= $(PATH_INFO)/Makefile.image.variable
-PATH_VERSIONFILE ?= $(PATH_INFO)/Makefile.version.variable
+PATH_VERSIONFILE ?= $(PATH_INFO)/VERSION
 
 # 
 # Mount Path Variables
@@ -29,7 +29,7 @@ endif
 # 
 # Docker Path Variables
 #
-PATH_DOCKER ?= $(PATH_VERSIONS)/$(VERSION)
-PATH_DOCKER_TEST ?= $(PATH_TESTS)/test/$(VERSION)
-PATH_DOCKERFILE ?= $(PATH_VERSIONS)/$(VERSION)/Dockerfile
+PATH_DOCKER ?= $(PATH_ROOT)/src
+PATH_DOCKERFILE ?=$(PATH_DOCKER)/Dockerfile
+PATH_DOCKER_TEST ?= $(PATH_TESTS)/$(VERSION).bash
 PATH_OPTIONS ?= $(PATH_VERSIONS)/$(VERSION)/Makefile.options
