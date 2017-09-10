@@ -1,0 +1,44 @@
+{
+    "name": "xwindow",
+    "summary": "A super small Alpine image providing a x11 build image.",
+    "description": "Provides the sufficient dependendencies for an X11 environment.",
+    "url": "https://www.x.org/wiki/",
+    "vcs-type": "Git",
+    "vcs-url": "https://gitlab.com/jrbeverly-docker/docker-xwindow",
+    "docker": {
+        "cmd": "docker run -v $(pwd):/media/ jrbeverly/xwindow:baseimage g++ test.cpp -o test"
+    },
+    "volumes": [{
+        "path": "/media/",
+        "description": "The default working directory of the image."
+    }],
+    "meta": [{
+        "variable": "BUILD_DATE",
+        "description": "The Date/Time the image was built."
+    }, {
+        "variable": "VERSION",
+        "description": "Release identifier for the contents of the image."
+    }, {
+        "variable": "VCS_REF",
+        "description": "Identifier for the version of the source code from which this image was built."
+    }],
+    "args": [{
+        "variable": "USER",
+        "description": "Sets the [user](http://www.linfo.org/uid.html) to use when running the image."
+    }, {
+        "variable": "DUID",
+        "description": "The [user id](http://www.linfo.org/uid.html) of the docker user."
+    }, {
+        "variable": "DGID",
+        "description": "The [group id](http://www.linfo.org/uid.html) of the docker user's group."
+    }],
+    "tags": [{
+        "name": "baseimage",
+        "description": "A docker image with librsvg installed, running as docker user (`DUID`).",
+        "alias": []
+    }, {
+        "name": "privileged",
+        "description": "A docker image with librsvg installed.",
+        "alias": []
+    }]
+}
