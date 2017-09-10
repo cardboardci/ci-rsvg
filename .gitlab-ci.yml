@@ -15,11 +15,11 @@ stages:
 variables:
   STAGING_REGISTRY: registry.gitlab.com
   STAGING_NAMESPACE: jrbeverly-docker
-  STAGING_PROJECT: docker-rsvg
+  STAGING_PROJECT: docker-xwindow
 
   REGISTRY: docker.io
   NAMESPACE: jrbeverly
-  PROJECT: rsvg
+  PROJECT: xwindow
 
   GIT_COMMIT: ${CI_COMMIT_SHA}
   TAG_PREFIX: ${CI_PIPELINE_ID}-
@@ -29,8 +29,8 @@ variables:
 # ----------------------------------------
 
 before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-  - apk --no-cache add make
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $STAGING_REGISTRY
+  - apk --update-cache add make
 
 # ----------------------------------------
 # Build
@@ -38,29 +38,23 @@ before_script:
 
 build-baseimage:
   stage: build
-  variables: 
+  variables:
     VERSION: baseimage
   script:
     - make -C build/ build
     - make -C build/ push
   only:
-    - triggers
-    - /^version-.*$/
-  except:
-    - branches
+    - web
 
 build-privileged:
   stage: build
-  variables: 
+  variables:
     VERSION: privileged
   script:
     - make -C build/ build
     - make -C build/ push
   only:
-    - triggers
-    - /^version-.*$/
-  except:
-    - branches
+    - web
 
 # ----------------------------------------
 # Tests
@@ -68,7 +62,7 @@ build-privileged:
 
 test-baseimage:
   stage: test
-  variables: 
+  variables:
     VERSION: baseimage
   script:
     - make -s -C build/ pull
@@ -76,14 +70,11 @@ test-baseimage:
   dependencies:
     - build-baseimage
   only:
-    - triggers
-    - /^version-.*$/
-  except:
-    - branches
+    - web
 
 test-privileged:
   stage: test
-  variables: 
+  variables:
     VERSION: privileged
   script:
     - make -s -C build/ pull
@@ -91,10 +82,7 @@ test-privileged:
   dependencies:
     - build-privileged
   only:
-    - triggers
-    - /^version-.*$/
-  except:
-    - branches
+    - web
 
 # ----------------------------------------
 # Deploy
@@ -103,18 +91,11 @@ test-privileged:
 deploy:
   stage: deploy
   script:
+    - sh build/ci/pull.sh
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
-    - make -C build/ VERSION=baseimage pull
-    - make -C build/ VERSION=privileged pull
-    - make -C build/ VERSION=baseimage release
-    - make -C build/ VERSION=privileged release
-    - make -C build/ VERSION=baseimage deploy
-    - make -C build/ VERSION=privileged deploy
+    - sh build/ci/deploy.sh
   dependencies:
     - test-baseimage
     - test-privileged
   only:
-    - triggers
-    - /^version-.*$/
-  except:
-    - branches
+    - web
