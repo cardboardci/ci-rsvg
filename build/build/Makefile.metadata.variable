@@ -1,0 +1,6 @@
+#
+# Metadata Variables
+#
+BUILD_DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+GIT_COMMIT ?= $(strip $(shell git rev-parse --short HEAD))
+CODE_VERSION ?= $(strip $(shell cat $(PATH_VERSIONFILE)))
