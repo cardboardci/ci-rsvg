@@ -1,0 +1,8 @@
+## Editors:
+.vscode/
+
+## Documentation images:
+docs/**/images/
+
+## Test outputs:
+tests/target/
