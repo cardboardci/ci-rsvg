@@ -1,0 +1,3 @@
+REGISTRY ?= docker.io
+NAMESPACE ?= jrbeverly
+PROJECT ?= xwindow
