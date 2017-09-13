@@ -6,6 +6,7 @@
  * [Build Process](#build-process)
  * [Labels](#labels)
  * [User and Group Mapping](#user-and-group-mapping)
+ * [Acknowledgements](#acknowledgements)
 
 ---
 
@@ -117,6 +118,10 @@ docker inspect -f '{{ index .Config.Labels "org.doc-schema.group" }}' jrbeverly/
 ```
 
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`).
+
+## Acknowledgements
+
+The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/README.md).
 
 [image-badge]: https://img.shields.io/badge/ubuntu-17.04-orange.svg?maxAge=2592000
 [image-link]: https://hub.docker.com/r/_/ubuntu/ "The common base image."
