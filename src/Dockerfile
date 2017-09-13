@@ -18,6 +18,10 @@ CMD []
 #
 # User
 #
+ARG DUID
+ARG DGID
+RUN addgroup -g ${DGID} -S docker && adduser -S -G docker -u ${DUID} docker
+
 ARG USER
 USER $USER
 
