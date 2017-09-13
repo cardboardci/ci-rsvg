@@ -123,8 +123,8 @@ The notation of the build variables is short form for docker user id (`DUID`) an
 
 The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/README.md).
 
-[image-badge]: https://img.shields.io/badge/ubuntu-17.04-orange.svg?maxAge=2592000
-[image-link]: https://hub.docker.com/r/_/ubuntu/ "The common base image."
+[image-badge]: https://img.shields.io/badge/alpine-3.6-orange.svg?maxAge=2592000
+[image-link]: https://hub.docker.com/r/_/alpine/ "The common base image."
 
 [build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/master/build.svg
 [build-link]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master "Current build status."
