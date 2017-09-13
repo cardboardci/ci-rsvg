@@ -1,19 +1,24 @@
 include Makefile.file.variable
 include Makefile.metadata.variable
 
-# Variables
-#
-# Variables used in the Makefile to specify the image
+#========================
+# Global Variables
+#========================
+
 DEFAULT_VERSION := -no-version-set-
 VERSION ?= $(DEFAULT_VERSION)
 TAG_SUFFIX ?=
 TAG_PREFIX ?=
+ALIASES = 
 BUILD_PARAMETERS =
 
-# Validation
-#
-# All rules below this point require the following properties to hold
-RULES := image build test pull push release deploy
+include $(PATH_INFO)/Makefile.*.variable
+
+#========================
+# Rule Validation
+#========================
+
+RULES := build debug deploy image pull push release test inspect-%
 ifneq (,$(filter $(RULES),$(MAKECMDGOALS)))
 ifeq ($(VERSION),$(DEFAULT_VERSION))
 $(error The version is not properly set for the command (make VERSION=<-> COMMAND))
@@ -36,44 +41,42 @@ ifeq (,$(wildcard $(PATH_VERSIONFILE)))
 $(error The version of the docker image is not present in 'info/')
 endif
 
-# Registry
-#
-# Sets up the staging repository 
+#========================
+# Image Variables
+#========================
+
 STAGING_REGISTRY ?= $(REGISTRY)
 STAGING_NAMESPACE ?= $(NAMESPACE)
 STAGING_PROJECT ?= $(PROJECT)
 
-# Variables
-#
-# Common variables of the project
 IMAGE := ${REGISTRY}/${NAMESPACE}/${PROJECT}
 STAGING_IMAGE := ${STAGING_REGISTRY}/${STAGING_NAMESPACE}/${STAGING_PROJECT}
 WORKING_IMAGE ?= $(STAGING_IMAGE):$(TAG_PREFIX)$(TAG)$(TAG_SUFFIX)
 
-## 
+##========================
 ## Rules
-##
-.PHONY: build test prune purge clean debug pull push release image info debug check-env
-default: info
+##========================
 
-# Output
-#
-# Output details about the variables of the build process.
+.PHONY: build clean debug help image info prune pull purge push release status test versions inspect-% print-%
+.DEFAULT_GOAL := help
 
-# Prints the variable value (make debug-VARIABLE)
-debug-%  : ; @echo $* = $($*)
+#========================
+# Output Rules
+#========================
 
-# Prints a collection of relevant variables
-info:
-	@echo Image Version: $(VERSION)
+help:
+	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+
+print-% : ; @echo $* = $($*) ## Prints the variable value for an image.
+
+status: ## Prints common project variables used for debugging.
 	@echo CODE_VERSION = $(CODE_VERSION)
 	@echo GIT_COMMIT = $(GIT_COMMIT)
 	@echo BUILD_DATE = $(BUILD_DATE)
-	@echo Working Image: $(WORKING_IMAGE)
 	@echo
 	@echo Registry:
 	@echo IMAGE = $(IMAGE)
-	@echo STAGING_IMAGE = $(STAGING_IMAGE)	
+	@echo STAGING_IMAGE = $(STAGING_IMAGE)
 	@echo
 	@echo Pathing:
 	@echo PATH_DOCKER: $(PATH_DOCKER)
@@ -84,35 +87,69 @@ info:
 	@echo PATH_TESTS = $(PATH_TESTS)
 	@echo
 	@echo Versions:
-	@echo $(shell ls ${PATH_VERSIONS} | tr "\n" " " )
+	@echo $(shell ls ${PATH_VERSIONS} | tr "\n" " ")
 
-# Tidy Up
-#
-# Facilitates cleaning of the docker images related to this image
+versions: ## Prints the image versions.
+	@echo $(shell ls ${PATH_VERSIONS} | tr "\n" " ")
 
-# Removes unused images
-prune:
+debug: check-version check-tag ## Prints common project variables used for version debugging.
+	@echo VERSION: $(VERSION)
+	@echo
+	@echo TAG: $(TAG)
+	@echo IMAGE: $(WORKING_IMAGE)
+	@echo ALIASES: $(ALIASES)
+	@echo PARAMS: $(BUILD_PARAMS)
+	@echo
+	@echo Registry:
+	@echo IMAGE = $(IMAGE)
+	@echo STAGING_IMAGE = $(STAGING_IMAGE)
+	@echo
+	@echo Pathing:
+	@echo PATH_DOCKER: $(PATH_DOCKER)
+	@echo PATH_DOCKERFILE: $(PATH_DOCKERFILE)
+	@echo PATH_BUILD = $(PATH_BUILD)
+	@echo PATH_ROOT = $(PATH_ROOT)
+	@echo PATH_VERSIONS = $(PATH_VERSIONS)
+	@echo PATH_TESTS = $(PATH_TESTS)
+
+#========================
+# Docker Rules
+#========================
+
+prune: ## Remove all unused images.
 	docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi
 
-# Removes the image (and all tags)
-clean:
+clean: ## Remove one or more tags of the image.
 	docker images | grep $(STAGING_NAMESPACE)/$(STAGING_PROJECT) | tr -s ' ' | cut -d ' ' -f 3 | xargs --no-run-if-empty docker rmi
 
-# Removes all images and containers
-purge:
+purge: ## Remove all unused containers and image.
 	docker ps -qa | xargs --no-run-if-empty docker rm -fv
 	docker images -qa | xargs --no-run-if-empty docker rmi -f
 
-# Build
-#
-# Builds the image pulling variables from the `.variable` files
+pull: check-version check-tag ## Pull the working docker image from a staging registry.
+	docker pull $(WORKING_IMAGE)
 
-# Prints the working name of the image. 
-image: check-version check-tag
+push: check-version check-tag ## Push the working docker image to a staging registry.
+	docker push $(WORKING_IMAGE)
+
+release: check-version check-tag ## Tag the working image as a release image.
+	docker tag $(WORKING_IMAGE) $(IMAGE):$(TAG)
+	for _alias in $(ALIASES) ; do docker tag $(WORKING_IMAGE) $(IMAGE):$$_alias; done
+
+deploy: check-version check-tag ## Push the docker image to a registry.
+	docker push $(IMAGE):$(TAG)
+	for _alias in $(ALIASES) ; do docker push $(IMAGE):$$_alias; done
+
+#========================
+# Build Rules
+#========================
+
+inspect-% : check-version check-tag ; @echo $* = $($*) ## Prints the variable value for a image version.
+
+image: check-version check-tag ## Prints the working name of the image.
 	@echo $(WORKING_IMAGE)
 
-# Build the working image
-build: check-path check-tag
+build: check-path check-tag ## Build an image for a specific version.
 	docker build --pull \
 		 -t $(WORKING_IMAGE) \
 		 \
@@ -124,43 +161,30 @@ build: check-path check-tag
 		\
 		-f $(PATH_DOCKERFILE) $(PATH_DOCKER)/. \
 
-# Testing
-#
-# Run tests on the provided image
+#========================
+# Test Rules
+#========================
 
-# Tests the working docker image
-test: check-version check-tag check-test
+test: check-version check-tag check-test ## Test an image for a specific version.
 	@echo Running '$(VERSION)' tests on $(WORKING_IMAGE).
-	docker run --rm -v $(MOUNT_TESTS):/media $(WORKING_IMAGE) sh test/$(VERSION)/test.sh
+	docker run --rm --privileged \
+		-v $(MOUNT_TESTS):/media --workdir /media \
+		-e DOCKER_IMAGE_NAME=$(WORKING_IMAGE) \
+		-e DOCKER_PATH=$(MOUNT_TESTS) \
+		\
+		-v /var/run/docker.sock:/docker.sock \
+		-e DOCKER_HOST="unix:///docker.sock" \
+		\
+		jrbeverly/dbats bats $(VERSION).bash
 
-# Registry 
-#
-# Facilitates pushing and pulling the image from a registry
-
-# Pull the working docker image from a registry
-pull: check-version check-tag
-	docker pull $(WORKING_IMAGE)
-
-# Push the working docker image to a registry
-push: check-version check-tag
-	docker push $(WORKING_IMAGE)
-
-# Tag the working image as a release image
-release: check-version check-tag
-	docker tag $(WORKING_IMAGE) $(IMAGE):$(TAG)
-
-# Push the docker image to a registry
-deploy: check-version check-tag
-	docker push $(IMAGE):$(TAG)
-
+#========================
 # Validation
-#
-# Validate properties about the code
+#========================
 
 # Ensures that the test path is valid
 check-test:
-ifeq (,$(wildcard $(PATH_DOCKER_TEST)/test.sh))
-	$(error The testing for version [$(VERSION)] is not valid for this image.  See tests/test/ for possible image versions [$(PATH_DOCKER_TEST)/test.sh])
+ifeq (,$(wildcard $(PATH_DOCKER_TEST)))
+	$(error The testing for version [$(VERSION)] is not valid for this image.  See tests/test/ for possible image versions [$(PATH_DOCKER_TEST)])
 endif
 
 # Ensures that the tag is set

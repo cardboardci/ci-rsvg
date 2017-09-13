@@ -1,0 +1,7 @@
+build:
+  image: jrbeverly/rsvg:baseimage
+  script:
+    - rsvg-convert test.svg -o test.png
+  artifacts:
+    paths:
+      - test.png

@@ -1,4 +1,4 @@
-FROM jrbeverly/baseimage:alpine
+FROM alpine:3.6
 
 #
 # Provision
@@ -18,6 +18,10 @@ CMD []
 #
 # User
 #
+ARG DUID
+ARG DGID
+RUN addgroup -g ${DGID} -S docker && adduser -S -G docker -u ${DUID} docker
+
 ARG USER
 USER $USER
 
@@ -42,15 +46,16 @@ LABEL \
     org.label-schema.version=$VERSION \
     org.label-schema.url="http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html" \
     org.label-schema.license="MIT" \
-    org.label-schema.vcs-type="Git" \
+    org.label-schema.docker.cmd="docker run -v $(pwd):/media/ jrbeverly/rsvg:privileged rsvg-convert test.svg -o test.png" \
+    org.label-schema.vendor="jrbeverly" \
+    org.label-schema.schema-version="1.0" \
+    \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url="https://gitlab.com/jrbeverly-docker/docker-rsvg" \
-    org.label-schema.docker.cmd="docker run -v $(pwd):/media/ jrbeverly/rsvg:baseimage rsvg-convert test.svg -o test.png" \
     \
-    io.jrbeverly.project="rsvg" \
-    io.jrbeverly.summary="A docker image with librsvg installed, running as the $USER user." \
-    io.jrbeverly.rsvg.meta.BUILD_DATE="The Date/Time the image was built." \
-    io.jrbeverly.rsvg.meta.VERSION="Release identifier for the contents of the image." \
-    io.jrbeverly.rsvg.meta.VCS_REF="Identifier for the version of the source code from which this image was built." \
-    io.jrbeverly.rsvg.args.USER="Sets the [user](http://www.linfo.org/uid.html) to use when running the image." \
-    io.jrbeverly.rsvg.volume.media="/media/|The default working directory of the image."
+    org.doc-schema.project="rsvg" \
+    org.doc-schema.summary="A docker image with librsvg installed, running as the $USER user." \
+    org.doc-schema.user=$DUID \
+    org.doc-schema.group=$DGID
+
+

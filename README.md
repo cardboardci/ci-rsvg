@@ -1,9 +1,4 @@
-# Dockerized librsvg
-[![Image][image-badge]][image-link]
-[![License][license-badge]][license-link]
-[![Build][build-badge]][build-link]
-
----
+# Dockerized RSvg
 
  * [Summary](#summary)
  * [Usage](#usage)
@@ -11,24 +6,35 @@
  * [Build Process](#build-process)
  * [Labels](#labels)
  * [User and Group Mapping](#user-and-group-mapping)
+ * [Acknowledgements](#acknowledgements)
+
+---
 
 ## Summary
 
-A super small Alpine image with rsvg-convert installed.
+A super small image with [librsvg](http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html) installed.
+
+## Image
+
+[![Image][image-badge]][image-link]
+[![License][license-badge]][license-link]
+[![Build][build-badge]][build-link]
+[![Docker][docker-badge]][docker-link]
 
 ## Usage
 
-You can use this image locally with `docker run`, calling [`rsvg-convert`](http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html) as such:
+You can use this image locally with `docker run`, calling `rsvg-convert` to rasterize an image:
 
-```console
-docker run -v /media/:/media/ jrbeverly/rsvg:baseimage rsvg-convert test.svg -o test.png
+```bash
+docker run -v $(pwd):/media/ jrbeverly/rsvg:privileged rsvg-convert test.svg -o test.png
 ```
 
 ### Gitlab
+
 You can setup a build job using `.gitlab-ci.yml`:
 
 ```yaml
-compile_pdf:
+build:
   image: jrbeverly/rsvg:baseimage
   script:
     - rsvg-convert test.svg -o test.png
@@ -39,18 +45,18 @@ compile_pdf:
 
 ## Image Tags
 
-Build tags available with the image `jrbeverly/rsvg:{TAG}`.
+Build tags available with the image: `jrbeverly/rsvg`.
 
 | Tag | Status | Description |
 | --- | ------ | ----------- |
 | [![Version base][base-badge]][base-link] | [![Image base][base-image-badge]][base-link] | A docker image with librsvg installed, running as docker user (`DUID`). |
-| [![Version privileged][privileged-badge]][privileged-link] | [![Image privileged][privileged-image-badge]][privileged-link]  | A docker image with librsvg installed. |
+| [![Version privileged][privileged-badge]][privileged-link] | [![Image privileged][privileged-image-badge]][privileged-link] | A docker image with librsvg installed, running with elevated permissions (root). |
 
 ## Components
 
 ### Metadata Arguments
 
-Metadata build arguments used in the system, the follow the [Label Schema Convention](http://label-schema.org).
+Metadata build arguments used with the [Label Schema Convention](http://label-schema.org).
 
 | Variable | Value | Description |
 | -------- | ----- |------------ |
@@ -60,68 +66,74 @@ Metadata build arguments used in the system, the follow the [Label Schema Conven
 
 ### Build Arguments
 
-Build arguments used in the system.
+Build arguments used in the image.
 
 | Variable | Value | Description |
 | -------- | ------- |------------ |
-| USER | see [Makefile](build/Makefile) | Sets the [user](http://www.linfo.org/uid.html) to use when running the image. |
+| USER | see `Makefile.options` | Sets the [user](http://www.linfo.org/uid.html) to use when running the image. |
+| DUID | see [user.variable](info/Makefile.user.variable) | The [user id](http://www.linfo.org/uid.html) of the docker user. |
+| DGID | see [user.variable](info/Makefile.user.variable) | The [group id](http://www.linfo.org/uid.html) of the docker user's group. |
 
 ### Volumes
 
-Volumes exposed by the docker container.
+No volumes are exposed by the docker container. However, while running the image with limited permissions (`baseimage`), it is necessary to ensure that the **docker user** has permission to access mounted volumes. You will need to ensure that the **docker user** can read/write to the mounted volumes. (see [User / Group Identifiers](#user-and-group-mapping))
 
-| Volume | Description |
-| ------ | ----------- |
-| /media/ | The root directory containing files. |
-
-It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#user-and-group-mapping))
+The working directory of the image is `/media/`.
 
 ## Build Process
 
 To build the docker image, use the included [`Makefile`](build/Makefile). It is recommended to use the makefile to ensure all build arguments are provided.
 
-```
-make VERSION=baseimage build
-make VERSION=privileged build
+```bash
+make VERSION=<version> build
 ```
 
-You can also build the image manually, as visible in [`Makefile`](build/Makefile).  However this is discouraged as the makefile ensures all build arguments are properly formatted.
+You can view the [`build/README.md`](build/README.md) for more on using the `Makefile` to build the image.
 
 ## Labels
 
-The docker image follows the [Label Schema Convention](http://label-schema.org).  The values in the namespace can be accessed by the following command:
+The docker image follows the [Label Schema Convention](http://label-schema.org). Label Schema is a community project to provide a shared namespace for use by multiple tools, specifically `org.label-schema`. The values in the namespace can be accessed by the following command:
 
-```console
-docker inspect -f '{{ index .Config.Labels "org.label-schema.LABEL" }}' IMAGE
+```bash
+docker inspect -f '{{ index .Config.Labels "org.label-schema.<LABEL>" }}' jrbeverly/rsvg:<TAG>
 ```
 
-The label namespace `io.jrbeverly` is common among `jrbeverly-docker` images and is a loosely structured set of values.  The values in the namespace can be accessed by the following command:
+### Label Extension
 
-```console
-docker inspect -f '{{ index .Config.Labels "io.jrbeverly.LABEL" }}' IMAGE
+The label namespace `org.doc-schema` is an extension of `org.label-schema`. The namespace stores internal variables often used when interacting with the image. These variables will often be application versions or exposed internal variables. The values in the namespace can be accessed by the following command:
+
+```bash
+docker inspect -f '{{ index .Config.Labels "org.doc-schema.<LABEL>" }}' jrbeverly/rsvg:<TAG>
 ```
 
 ## User and Group Mapping
 
-All processes within the docker container will be run as the **docker user**, a non-root user.  The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.  
+All processes within the `baseimage` docker container will be run as the **docker user**, a non-root user. The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.
 
-Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker user.  The values of `DUID` and `DGID` are visible in the [Build Arguments](#build-arguments), and can be accessed by the commands:
+Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker user. The values of `DUID` and `DGID` are visible in the [Build Arguments](#build-arguments), and can be accessed by the commands:
 
-```console
-docker inspect -f '{{ index .Config.Labels "io.jrbeverly.user" }}' IMAGE
-docker inspect -f '{{ index .Config.Labels "io.jrbeverly.group" }}' IMAGE
+```bash
+docker inspect -f '{{ index .Config.Labels "org.doc-schema.user" }}' jrbeverly/rsvg:baseimage
+docker inspect -f '{{ index .Config.Labels "org.doc-schema.group" }}' jrbeverly/rsvg:baseimage
 ```
 
-The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
+The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`).
+
+## Acknowledgements
+
+The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/README.md).
+
+[image-badge]: https://img.shields.io/badge/alpine-3.6-orange.svg?maxAge=2592000
+[image-link]: https://hub.docker.com/r/_/alpine/ "The common base image."
 
 [build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/master/build.svg
-[build-link]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master
+[build-link]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master "Current build status."
+
+[docker-badge]: https://img.shields.io/badge/jrbeverly-rsvg-red.svg?maxAge=2592000
+[docker-link]: https://hub.docker.com/r/jrbeverly/rsvg/ "The docker image."
 
 [license-badge]: https://images.microbadger.com/badges/license/jrbeverly/rsvg.svg
 [license-link]: https://microbadger.com/images/jrbeverly/rsvg "Get your own license badge on microbadger.com"
-
-[image-badge]: https://img.shields.io/badge/alpine-3.5-orange.svg?maxAge=2592000
-[image-link]: https://hub.docker.com/r/jrbeverly/baseimage/
 
 [base-badge]: https://images.microbadger.com/badges/version/jrbeverly/rsvg:baseimage.svg
 [base-image-badge]: https://images.microbadger.com/badges/image/jrbeverly/rsvg:baseimage.svg
