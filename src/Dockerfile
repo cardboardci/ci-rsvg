@@ -46,7 +46,7 @@ LABEL \
     org.label-schema.version=$VERSION \
     org.label-schema.url="http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html" \
     org.label-schema.license="MIT" \
-    org.label-schema.docker.cmd="docker run -v $(pwd):/media/ jrbeverly/rsvg:baseimage rsvg-convert test.svg -o test.png" \
+    org.label-schema.docker.cmd="docker run -v $(pwd):/media/ jrbeverly/rsvg:privileged rsvg-convert test.svg -o test.png" \
     org.label-schema.vendor="jrbeverly" \
     org.label-schema.schema-version="1.0" \
     \

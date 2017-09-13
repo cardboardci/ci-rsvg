@@ -26,7 +26,7 @@ A super small image with [X Window System](https://www.x.org/wiki/) development 
 You can use this image locally with `docker run`, calling `g++` to build X Window System applications:
 
 ```bash
-docker run -v /media/:/media/ jrbeverly/xwindow:privileged g++ myxapp.cpp -o xapp
+docker run -v $(pwd):/media/ jrbeverly/rsvg:privileged rsvg-convert test.svg -o test.png
 ```
 
 ### Gitlab
