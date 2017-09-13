@@ -15,11 +15,11 @@ stages:
 variables:
   STAGING_REGISTRY: registry.gitlab.com
   STAGING_NAMESPACE: jrbeverly-docker
-  STAGING_PROJECT: docker-xwindow
+  STAGING_PROJECT: docker-wkhtmltopdf
 
   REGISTRY: docker.io
   NAMESPACE: jrbeverly
-  PROJECT: xwindow
+  PROJECT: wkhtmltopdf
 
   GIT_COMMIT: ${CI_COMMIT_SHA}
   TAG_PREFIX: ${CI_PIPELINE_ID}-
@@ -45,6 +45,7 @@ build-baseimage:
     - make -C build/ push
   only:
     - web
+    - master
 
 build-privileged:
   stage: build
@@ -55,6 +56,7 @@ build-privileged:
     - make -C build/ push
   only:
     - web
+    - master
 
 # ----------------------------------------
 # Tests
@@ -71,6 +73,7 @@ test-baseimage:
     - build-baseimage
   only:
     - web
+    - master
 
 test-privileged:
   stage: test
@@ -83,6 +86,7 @@ test-privileged:
     - build-privileged
   only:
     - web
+    - master
 
 # ----------------------------------------
 # Deploy
@@ -99,3 +103,4 @@ deploy:
     - test-privileged
   only:
     - web
+    - master
