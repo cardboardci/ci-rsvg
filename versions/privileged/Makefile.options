@@ -1,10 +1,5 @@
 # Image
 TAG := privileged
-
-# Build Args
 USER := root
-BUILD_PARAMS := --build-arg USER="${USER}"
 
-# Filepath
-PATH_DOCKER := $(PATH_ROOT)/src
-PATH_DOCKERFILE := $(PATH_DOCKER)/Dockerfile
+BUILD_PARAMS := --build-arg DUID="${DUID}" --build-arg DGID="${DGID}" --build-arg USER="${USER}"
