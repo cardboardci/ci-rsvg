@@ -1,0 +1,12 @@
+{
+    "name": "<name>",
+    "license": "Public Domain",
+    "url": "<url>",
+    "author": {
+        "name": "<author>",
+        "url": "<author url>"
+    },
+    "tags": [
+        "<tags>"
+    ]
+}
