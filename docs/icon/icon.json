@@ -1,12 +1,17 @@
 {
-    "name": "<name>",
-    "license": "Public Domain",
-    "url": "<url>",
+    "name": "Cloud Docker",
+    "license": "Creative Commons By 3.0",
+    "url": "https://thenounproject.com/term/docker/676618/",
     "author": {
-        "name": "<author>",
-        "url": "<author url>"
+        "name": "cre.ativo mustard",
+        "url": "https://thenounproject.com/cre.ativo.mustard"
     },
     "tags": [
-        "<tags>"
+        "Cloud Docker",
+        "Cloud",
+        "Container",
+        "Data",
+        "Docker",
+        "Host"
     ]
 }
