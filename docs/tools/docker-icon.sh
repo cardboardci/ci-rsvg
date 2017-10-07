@@ -3,5 +3,8 @@ command -v docker >/dev/null 2>&1 || { echo >&2 "The script requires 'docker' bu
 
 #
 DIR=$(dirname "$(readlink -f "$0")")
-mkdir -p "$DIR/images"
-docker run --rm -v "$DIR":/media/ jrbeverly/rsvg:privileged rsvg-iconset -f icon.svg -o images/icon
+DIR_DOCS=$(dirname "$DIR")
+DIR_ICON="$DIR_DOCS/icon"
+
+mkdir -p "$DIR_ICON/images"
+docker run --rm -v "$DIR_DOCS":/media/ jrbeverly/rsvg:privileged sh tools/icon-gen.sh
