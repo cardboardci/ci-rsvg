@@ -6,3 +6,5 @@ docs/**/images/
 
 ## Test outputs:
 tests/target/
+# Documentation:
+docs/**/images/
