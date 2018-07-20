@@ -121,24 +121,6 @@ The notation of the build variables is short form for docker user id (`DUID`) an
 
 ## Acknowledgements
 
-The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/README.md).
+The project icon is retrieved from [the Noun Project](docs/icon/icon.json). The original source material has been altered for the purposes of the project. The icon is used under the terms of the [Creative Commons By 3.0](https://creativecommons.org/licenses/by/3.0/).
 
-[image-badge]: https://img.shields.io/badge/alpine-3.6-orange.svg?maxAge=2592000
-[image-link]: https://hub.docker.com/r/_/alpine/ "The common base image."
-
-[build-badge]: https://gitlab.com/jrbeverly-docker/docker-rsvg/badges/master/build.svg
-[build-link]: https://gitlab.com/jrbeverly-docker/docker-rsvg/commits/master "Current build status."
-
-[docker-badge]: https://img.shields.io/badge/jrbeverly-rsvg-red.svg?maxAge=2592000
-[docker-link]: https://hub.docker.com/r/jrbeverly/rsvg/ "The docker image."
-
-[license-badge]: https://images.microbadger.com/badges/license/jrbeverly/rsvg.svg
-[license-link]: https://microbadger.com/images/jrbeverly/rsvg "Get your own license badge on microbadger.com"
-
-[base-badge]: https://images.microbadger.com/badges/version/jrbeverly/rsvg:baseimage.svg
-[base-image-badge]: https://images.microbadger.com/badges/image/jrbeverly/rsvg:baseimage.svg
-[base-link]: https://microbadger.com/images/jrbeverly/rsvg:baseimage "Get your own version badge on microbadger.com"
-
-[privileged-badge]: https://images.microbadger.com/badges/version/jrbeverly/rsvg:privileged.svg
-[privileged-image-badge]: https://images.microbadger.com/badges/image/jrbeverly/rsvg:privileged.svg
-[privileged-link]: https://microbadger.com/images/jrbeverly/rsvg:privileged "Get your own version badge on microbadger.com"
+The project icon is by [cre.ativo mustard from the Noun Project](https://thenounproject.com/term/docker/676618/).
