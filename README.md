@@ -2,7 +2,7 @@
 
 ## Summary
 
-A super small image with [librsvg](http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html) installed.
+A super small image with [librsvg](http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html) installed. The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/icon.json)
 
 **NOTE: This image is marked EOL, and use is discouraged.**
 
