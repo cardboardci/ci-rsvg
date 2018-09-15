@@ -28,15 +28,6 @@ build:
       - test.png
 ```
 
-## Image Tags
-
-Build tags available with the image: `jrbeverly/rsvg`.
-
-| Tag | Status | Description |
-| --- | ------ | ----------- |
-| [![Version base][base-badge]][base-link] | [![Image base][base-image-badge]][base-link] | A docker image with librsvg installed, running as docker user (`DUID`). |
-| [![Version privileged][privileged-badge]][privileged-link] | [![Image privileged][privileged-image-badge]][privileged-link] | A docker image with librsvg installed, running with elevated permissions (root). |
-
 ## Components
 
 ### Metadata Arguments
