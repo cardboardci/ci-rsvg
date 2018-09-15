@@ -1,25 +1,10 @@
 # Dockerized RSvg
 
- * [Summary](#summary)
- * [Usage](#usage)
- * [Components](#components)
- * [Build Process](#build-process)
- * [Labels](#labels)
- * [User and Group Mapping](#user-and-group-mapping)
- * [Acknowledgements](#acknowledgements)
-
----
-
 ## Summary
 
 A super small image with [librsvg](http://manpages.ubuntu.com/manpages/zesty/man1/rsvg-convert.1.html) installed.
 
-## Image
-
-[![Image][image-badge]][image-link]
-[![License][license-badge]][license-link]
-[![Build][build-badge]][build-link]
-[![Docker][docker-badge]][docker-link]
+**NOTE: This image is marked EOL, and use is discouraged.**
 
 ## Usage
 
