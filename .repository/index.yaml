@@ -1,0 +1,18 @@
+slug: ci-rsvg
+description: '[DEPRECATED] A super small image with librsvg installed.'
+project: cardboardci
+namespace: ci
+status: archived
+icon: icon.svg
+license:
+  type: MIT
+  content: Jonathan Beverly <jrbeverly>
+  year: 2017
+topics: |-
+  [
+    "docker",
+    "makefile",
+    "gitlab-ci",
+    "svg",
+    "docker-ci-images"
+  ]
